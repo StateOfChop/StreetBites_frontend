@@ -11,6 +11,9 @@ export const noAuthGuard: CanActivateFn = (route, state) => {
   }
 
   // Si ya está logueado, redirigir al dashboard o home
-  // TODO: Redirigir según rol
-  return router.createUrlTree(['/']);
+  // TODO: Mejorar la redirección según rol (Service debería tener esta lógica)
+  if (authService.isAdmin()) {
+    return router.createUrlTree(['/admin']);
+  }
+  return router.createUrlTree(['/products']);
 };
