@@ -1,9 +1,64 @@
-<div class="register">
-  <h2>Register</h2>
-  <form>
-    <input placeholder="Nombre" />
-    <input placeholder="Email" />
-    <input placeholder="Password" type="password" />
-    <button type="submit">Registrar</button>
-  </form>
+<div
+  class="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#1a1a2e] via-[#16213e] to-[#0f0f23] relative overflow-hidden p-5">
+  <!-- Decorative elements -->
+  <div
+    class="absolute w-[300px] h-[300px] bg-[#ff6b35] rounded-full blur-[60px] opacity-40 -top-[100px] -right-[100px]">
+  </div>
+  <div
+    class="absolute w-[200px] h-[200px] bg-[#7fff00] rounded-full blur-[60px] opacity-40 -bottom-[50px] -left-[50px]">
+  </div>
+  <div class="absolute w-[150px] h-[150px] bg-[#7fff00] rounded-full blur-[60px] opacity-40 top-[40%] left-[5%]"></div>
+
+  <div
+    class="bg-[rgba(26,26,46,0.95)] border-2 border-[#ff6b35] rounded-[20px] p-10 w-full max-w-[420px] shadow-[0_0_30px_rgba(255,107,53,0.2),0_25px_50px_rgba(0,0,0,0.5)] relative z-10 max-[480px]:p-[30px_20px]">
+    <!-- Logo -->
+    <div class="flex justify-center items-center mb-5">
+      <img src="assets/images/Street_Bites_Logo.png" alt="Street Bites"
+        class="w-[150px] h-auto block mx-auto drop-shadow-[0_0_20px_rgba(255,107,53,0.5)]" />
+    </div>
+
+    <h1
+      class="font-['Permanent_Marker',cursive,sans-serif] text-[2.5rem] text-[#ff6b35] text-center m-0 [text-shadow:2px_2px_0_#7fff00,4px_4px_0_rgba(0,0,0,0.3)] max-[480px]:text-[2rem]">
+      Únete
+    </h1>
+    <p class="text-[#a0a0a0] text-center mt-2.5 mb-[30px] text-base">Crea tu cuenta y ordena comida callejera</p>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-5">
+      <div class="flex flex-col gap-2">
+        <label for="name" class="text-[#ff6b35] font-semibold text-sm uppercase tracking-wider">Nombre</label>
+        <input id="name" type="text" formControlName="name" placeholder="Tu nombre"
+          class="bg-white/5 border-2 border-[#333] rounded-[10px] p-[15px] text-white text-base transition-all duration-300 ease-in-out placeholder:text-[#666] focus:outline-none focus:border-[#ff6b35] focus:shadow-[0_0_15px_rgba(255,107,53,0.3)]" />
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label for="email" class="text-[#ff6b35] font-semibold text-sm uppercase tracking-wider">Correo</label>
+        <input id="email" type="email" formControlName="email" placeholder="tu@correo.com"
+          class="bg-white/5 border-2 border-[#333] rounded-[10px] p-[15px] text-white text-base transition-all duration-300 ease-in-out placeholder:text-[#666] focus:outline-none focus:border-[#ff6b35] focus:shadow-[0_0_15px_rgba(255,107,53,0.3)]" />
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label for="password" class="text-[#ff6b35] font-semibold text-sm uppercase tracking-wider">Contraseña</label>
+        <input id="password" type="password" formControlName="password" placeholder="Mínimo 6 caracteres"
+          class="bg-white/5 border-2 border-[#333] rounded-[10px] p-[15px] text-white text-base transition-all duration-300 ease-in-out placeholder:text-[#666] focus:outline-none focus:border-[#ff6b35] focus:shadow-[0_0_15px_rgba(255,107,53,0.3)]" />
+      </div>
+
+      <div *ngIf="errorMessage"
+        class="bg-[rgba(255,0,0,0.2)] border border-[#ff4444] rounded-lg p-3 text-[#ff6b6b] text-center text-sm">
+        {{ errorMessage }}
+      </div>
+
+      <button type="submit" [disabled]="registerForm.invalid || isLoading"
+        class="bg-gradient-to-br from-[#ff6b35] to-[#ff8c00] border-none rounded-[10px] py-[15px] px-[30px] text-white text-lg font-bold cursor-pointer transition-all duration-300 ease-in-out uppercase tracking-[2px] mt-2.5 hover:enabled:-translate-y-[3px] hover:enabled:shadow-[0_10px_30px_rgba(255,107,53,0.4)] disabled:opacity-50 disabled:cursor-not-allowed">
+        <span *ngIf="isLoading">Cargando...</span>
+        <span *ngIf="!isLoading">🔥 Registrarme</span>
+      </button>
+    </form>
+
+    <p class="text-center mt-[25px] text-[#a0a0a0]">
+      ¿Ya tienes cuenta?
+      <a routerLink="/auth/login"
+        class="text-[#7fff00] no-underline font-semibold transition-colors duration-300 hover:text-[#ff6b35] hover:underline">Inicia
+        sesión</a>
+    </p>
+  </div>
 </div>
