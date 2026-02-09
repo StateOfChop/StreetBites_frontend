@@ -1,29 +1,69 @@
-<div class="min-h-screen bg-gray-50">
-  <nav class="bg-white shadow">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between h-16">
-        <div class="flex items-center">
-          <h1 class="text-xl font-bold text-indigo-600">StreetBites</h1>
-        </div>
-        <div class="flex items-center gap-4">
-          <div class="text-sm text-gray-700">
-            Hola, <span class="font-semibold">{{ authService.currentUser()?.name }}</span>
-          </div>
-          <button 
-            (click)="logout()"
-            class="ml-4 px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-            Cerrar Sesión
-          </button>
-        </div>
-      </div>
-    </div>
-  </nav>
+<div class="max-w-7xl mx-auto py-6 px-4">
+  <h1 class="text-2xl font-bold text-gray-900 mb-6">Nuestros Productos</h1>
 
-  <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-    <div class="px-4 py-6 sm:px-0">
-      <div class="border-4 border-dashed border-gray-200 rounded-lg h-96 flex items-center justify-center">
-        <p class="text-gray-500 text-xl">Aquí irán los productos...</p>
+  <!-- Loading State -->
+  @if (loading()) {
+  <div class="flex justify-center py-12">
+    <p class="text-gray-500">Cargando productos...</p>
+  </div>
+  }
+
+  <!-- Error State -->
+  @if (error()) {
+  <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+    <p class="text-red-600">{{ error() }}</p>
+    <button (click)="loadProducts()" class="mt-2 text-sm text-red-700 underline">
+      Reintentar
+    </button>
+  </div>
+  }
+
+  <!-- Product Grid -->
+  @if (!loading() && !error()) {
+  @if (products().length === 0) {
+  <div class="text-center py-12">
+    <p class="text-gray-500">No hay productos disponibles en este momento.</p>
+  </div>
+  } @else {
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    @for (product of products(); track product.id) {
+    <div class="bg-white rounded-lg shadow p-4">
+      <!-- Imagen del producto -->
+      @if (product.imageUrl) {
+      <img [src]="product.imageUrl" [alt]="product.name" class="w-full h-48 object-cover rounded-lg mb-4">
+      } @else {
+      <div class="w-full h-48 bg-gray-200 rounded-lg mb-4 flex items-center justify-center">
+        <span class="text-gray-400">Sin imagen</span>
+      </div>
+      }
+
+      <!-- Información -->
+      <h3 class="text-lg font-semibold text-gray-900 mb-1">{{ product.name }}</h3>
+      <p class="text-gray-600 text-sm mb-2 line-clamp-2">{{ product.description }}</p>
+      <p class="text-xl font-bold text-blue-600 mb-2">{{ product.price | currency:'COP':'symbol-narrow':'1.0-0' }}</p>
+
+      <!-- Stock -->
+      <p class="text-sm mb-3" [class]="product.stock > 0 ? 'text-green-600' : 'text-red-600'">
+        @if (product.stock > 0) {
+        Stock: {{ product.stock }} disponibles
+        } @else {
+        Sin stock
+        }
+      </p>
+
+      <!-- Cantidad y botón agregar -->
+      <div class="flex items-center gap-2">
+        <input type="number" [(ngModel)]="quantities[product.id]" min="1" [max]="product.stock"
+          class="border rounded px-3 py-2 w-20 text-center" [disabled]="product.stock === 0">
+
+        <button (click)="addToCart(product)" [disabled]="product.stock === 0 || !isValidQuantity(product)"
+          class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed">
+          Agregar al carrito
+        </button>
       </div>
     </div>
-  </main>
+    }
+  </div>
+  }
+  }
 </div>

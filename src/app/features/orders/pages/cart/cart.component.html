@@ -1,3 +1,95 @@
-<div class="cart">
-  <h3>Carrito</h3>
+<div class="max-w-4xl mx-auto py-6 px-4">
+  <h1 class="text-2xl font-bold text-gray-900 mb-6">Mi Carrito</h1>
+
+  <!-- Error State -->
+  @if (error()) {
+  <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+    <p class="text-red-600">{{ error() }}</p>
+  </div>
+  }
+
+  <!-- Empty Cart -->
+  @if (items().length === 0) {
+  <div class="bg-white rounded-lg shadow p-8 text-center">
+    <p class="text-gray-500 mb-4">Tu carrito está vacío</p>
+    <a routerLink="/products" class="text-blue-600 hover:underline">
+      Ver productos
+    </a>
+  </div>
+  } @else {
+  <!-- Cart Items -->
+  <div class="bg-white rounded-lg shadow">
+    @for (item of items(); track item.productId) {
+    <div class="flex items-center p-4 border-b border-gray-100 last:border-b-0">
+      <!-- Imagen -->
+      @if (item.productImageUrl) {
+      <img [src]="item.productImageUrl" [alt]="item.productName" class="w-20 h-20 object-cover rounded-lg mr-4">
+      } @else {
+      <div class="w-20 h-20 bg-gray-200 rounded-lg mr-4 flex items-center justify-center">
+        <span class="text-gray-400 text-xs">Sin img</span>
+      </div>
+      }
+
+      <!-- Info del producto -->
+      <div class="flex-1">
+        <h3 class="font-semibold text-gray-900">{{ item.productName }}</h3>
+        <p class="text-blue-600 font-bold">{{ item.unitPrice | currency:'COP':'symbol-narrow':'1.0-0' }}</p>
+      </div>
+
+      <!-- Controles de cantidad -->
+      <div class="flex items-center gap-2 mr-4">
+        <button (click)="decrementQuantity(item.productId)" [disabled]="item.quantity <= 1"
+          class="w-8 h-8 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50">
+          -
+        </button>
+        <span class="w-8 text-center font-semibold">{{ item.quantity }}</span>
+        <button (click)="incrementQuantity(item.productId)" [disabled]="item.quantity >= item.stock"
+          class="w-8 h-8 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50">
+          +
+        </button>
+      </div>
+
+      <!-- Subtotal -->
+      <div class="w-28 text-right mr-4">
+        <p class="font-bold text-gray-900">
+          {{ item.unitPrice * item.quantity | currency:'COP':'symbol-narrow':'1.0-0' }}
+        </p>
+      </div>
+
+      <!-- Eliminar -->
+      <button (click)="removeItem(item.productId)" class="text-red-500 hover:text-red-700 p-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+        </svg>
+      </button>
+    </div>
+    }
+  </div>
+
+  <!-- Total y Checkout -->
+  <div class="bg-white rounded-lg shadow mt-4 p-6">
+    <div class="flex justify-between items-center mb-4">
+      <span class="text-lg font-semibold text-gray-900">Total:</span>
+      <span class="text-2xl font-bold text-blue-600">
+        {{ total() | currency:'COP':'symbol-narrow':'1.0-0' }}
+      </span>
+    </div>
+
+    <button (click)="openCheckoutConfirm()" [disabled]="loading()"
+      class="w-full bg-blue-600 text-white px-4 py-3 rounded hover:bg-blue-700 disabled:bg-gray-300 font-semibold">
+      @if (loading()) {
+      Procesando...
+      } @else {
+      Realizar Pedido
+      }
+    </button>
+  </div>
+  }
+
+  <!-- Confirm Dialog -->
+  <app-confirm-dialog [isOpen]="showConfirmDialog()" title="Confirmar Pedido"
+    message="¿Deseas confirmar tu pedido? Una vez realizado no podrás modificarlo." confirmText="Confirmar Pedido"
+    cancelText="Cancelar" (confirmed)="onConfirmCheckout($event)">
+  </app-confirm-dialog>
 </div>

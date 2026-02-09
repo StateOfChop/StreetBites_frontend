@@ -1,4 +1,56 @@
-<nav class="navbar">
-  <div class="brand">StreetBites</div>
-  <ul class="links"><li><a href="#">Inicio</a></li></ul>
+<nav class="bg-white shadow-md">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="flex justify-between items-center h-16">
+      <!-- Logo -->
+      <a routerLink="/" class="text-xl font-bold text-blue-600">StreetBites</a>
+
+      <!-- Navigation Links -->
+      @if (isLoggedIn()) {
+      <div class="flex items-center space-x-4">
+        <!-- Links para ADMIN -->
+        @if (isAdmin()) {
+        <a routerLink="/admin" routerLinkActive="text-blue-600" class="text-gray-700 hover:text-blue-600 px-3 py-2">
+          Dashboard
+        </a>
+        <a routerLink="/admin/products" routerLinkActive="text-blue-600"
+          class="text-gray-700 hover:text-blue-600 px-3 py-2">
+          Productos
+        </a>
+        <a routerLink="/admin/orders" routerLinkActive="text-blue-600"
+          class="text-gray-700 hover:text-blue-600 px-3 py-2">
+          Pedidos
+        </a>
+        } @else {
+        <!-- Links para USER -->
+        <a routerLink="/products" routerLinkActive="text-blue-600" class="text-gray-700 hover:text-blue-600 px-3 py-2">
+          Productos
+        </a>
+        <a routerLink="/orders/cart" routerLinkActive="text-blue-600"
+          class="relative text-gray-700 hover:text-blue-600 px-3 py-2">
+          Carrito
+          @if (cartItemCount() > 0) {
+          <span
+            class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+            {{ cartItemCount() }}
+          </span>
+          }
+        </a>
+        <a routerLink="/orders" routerLinkActive="text-blue-600" class="text-gray-700 hover:text-blue-600 px-3 py-2">
+          Mis Pedidos
+        </a>
+        }
+
+        <!-- User info and logout -->
+        <div class="flex items-center space-x-2 ml-4 pl-4 border-l border-gray-200">
+          <span class="text-sm text-gray-600">
+            {{ currentUser()?.email }}
+          </span>
+          <button (click)="logout()" class="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300 text-sm">
+            Cerrar sesión
+          </button>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
 </nav>

@@ -1,10 +1,18 @@
-import { Injectable } from '@angular/core';
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpInterceptorFn } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { finalize } from 'rxjs';
+import { LoadingService } from '../services/loading.service';
 
-@Injectable()
-export class LoadingInterceptor implements HttpInterceptor {
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return next.handle(req);
-  }
-}
+export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
+  const loadingService = inject(LoadingService);
+
+  // Mostrar spinner antes de la petición
+  loadingService.show();
+
+  return next(req).pipe(
+    finalize(() => {
+      // Ocultar spinner cuando la petición termine (éxito o error)
+      loadingService.hide();
+    })
+  );
+};

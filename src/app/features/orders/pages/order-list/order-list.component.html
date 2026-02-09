@@ -1,3 +1,87 @@
-<div class="orders">
-  <h3>Pedidos</h3>
+<div class="max-w-6xl mx-auto py-6 px-4">
+  <h1 class="text-2xl font-bold text-gray-900 mb-6">Mis Pedidos</h1>
+
+  <!-- Loading State -->
+  @if (loading()) {
+  <div class="flex justify-center py-12">
+    <p class="text-gray-500">Cargando pedidos...</p>
+  </div>
+  }
+
+  <!-- Error State -->
+  @if (error()) {
+  <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+    <p class="text-red-600">{{ error() }}</p>
+    <button (click)="loadOrders()" class="mt-2 text-sm text-red-700 underline">
+      Reintentar
+    </button>
+  </div>
+  }
+
+  <!-- Orders Table -->
+  @if (!loading() && !error()) {
+  @if (orders().length === 0) {
+  <div class="bg-white rounded-lg shadow p-8 text-center">
+    <p class="text-gray-500 mb-4">No tienes pedidos aún</p>
+    <a routerLink="/products" class="text-blue-600 hover:underline">
+      Ir a productos
+    </a>
+  </div>
+  } @else {
+  <div class="bg-white rounded-lg shadow overflow-hidden">
+    <table class="table-auto w-full">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">ID</th>
+          <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Fecha</th>
+          <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Estado</th>
+          <th class="px-4 py-3 text-right text-sm font-semibold text-gray-700">Total</th>
+          <th class="px-4 py-3 text-center text-sm font-semibold text-gray-700">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (order of orders(); track order.id) {
+        <tr class="border-t border-gray-100 hover:bg-gray-50">
+          <td class="px-4 py-3 text-sm text-gray-600">
+            #{{ order.id | slice:0:8 }}
+          </td>
+          <td class="px-4 py-3 text-sm text-gray-600">
+            {{ order.createdAt | date:'dd/MM/yyyy HH:mm' }}
+          </td>
+          <td class="px-4 py-3">
+            <span class="px-2 py-1 rounded-full text-sm" [class]="getStatusClass(order.status)">
+              {{ getStatusLabel(order.status) }}
+            </span>
+          </td>
+          <td class="px-4 py-3 text-right text-sm font-semibold text-gray-900">
+            {{ order.total | currency:'COP':'symbol-narrow':'1.0-0' }}
+          </td>
+          <td class="px-4 py-3 text-center">
+            <div class="flex justify-center gap-2">
+              <a [routerLink]="['/orders', order.id]"
+                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm">
+                Ver detalle
+              </a>
+              @if (order.status === OrderStatus.PENDING) {
+              <button (click)="openCancelDialog(order.id)"
+                class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 text-sm">
+                Cancelar
+              </button>
+              }
+            </div>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  }
+  }
+
+  <!-- Confirm Cancel Dialog -->
+  <app-confirm-dialog [isOpen]="showCancelDialog()" title="Cancelar Pedido"
+    message="¿Estás seguro de cancelar este pedido? Esta acción no se puede deshacer." confirmText="Sí, cancelar"
+    cancelText="No, mantener" confirmButtonClass="bg-red-600 text-white hover:bg-red-700"
+    (confirmed)="onConfirmCancel($event)">
+  </app-confirm-dialog>
 </div>

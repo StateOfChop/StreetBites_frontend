@@ -4,12 +4,13 @@ import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { AuthResponse, LoginDto, RegisterDto, User, UserRole } from '../models/auth.models';
+import { environment } from '../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
-    private apiUrl = '/api/auth';
+    private apiUrl = `${environment.apiUrl}/api/Auth`;
     private tokenKey = 'streetbites_token';
 
     // Signals para estado reactivo
@@ -65,11 +66,11 @@ export class AuthService {
         try {
             const decoded: any = jwtDecode(token);
 
-            // Mapear claims del token (backend usa ClaimTypes standard)
+            // Mapear claims del token (.NET usa ClaimTypes con URIs largas)
             const user: User = {
-                id: decoded.nameid || decoded.sub,
-                email: decoded.email,
-                role: decoded.role as UserRole,
+                id: decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'],
+                email: decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'],
+                role: decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] as UserRole,
                 name: decoded.fullName
             };
 

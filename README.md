@@ -1,59 +1,92 @@
-# StreetBites
+# StreetBites Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.1.
+Sistema de gestión de pedidos para comida rápida - Frontend Angular.
 
-## Development server
+## 🚀 Tecnologías
 
-To start a local development server, run:
+- **Angular 21** con componentes standalone
+- **TypeScript** 
+- **Tailwind CSS** para estilos
+- **Signals** para manejo de estado reactivo
 
-```bash
-ng serve
-```
+## 📋 Requisitos Previos
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- Node.js 18+
+- npm 9+
+- Backend corriendo en `http://localhost:5000`
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## 🛠️ Instalación
 
 ```bash
-ng generate --help
+# Instalar dependencias
+npm install
+
+# Iniciar servidor de desarrollo
+npm run start
 ```
 
-## Building
+La aplicación estará disponible en `http://localhost:4200`
 
-To build the project run:
+## 📁 Estructura del Proyecto
+
+```
+src/app/
+├── core/                   # Servicios, guards e interceptors globales
+│   ├── guards/            # AuthGuard, RoleGuard, NoAuthGuard
+│   ├── interceptors/      # Auth, Error, Loading interceptors
+│   ├── models/            # Modelos de autenticación
+│   └── services/          # AuthService, LoadingService
+├── features/              # Módulos por funcionalidad
+│   ├── admin/             # Dashboard, gestión de productos y pedidos
+│   ├── auth/              # Login, registro
+│   ├── orders/            # Carrito, lista de pedidos, detalle
+│   └── products/          # Lista de productos
+├── shared/                # Componentes compartidos
+│   ├── components/        # Navbar, Spinner, ConfirmDialog
+│   └── pipes/             # Pipes personalizados
+└── environments/          # Configuración por ambiente
+```
+
+## 👥 Roles de Usuario
+
+### USER
+- Ver productos disponibles
+- Agregar productos al carrito
+- Realizar pedidos
+- Ver sus pedidos
+- Cancelar pedidos pendientes
+
+### ADMIN
+- Dashboard con estadísticas
+- Gestionar productos (CRUD)
+- Gestionar todos los pedidos
+- Cambiar estado de pedidos
+
+## 🔐 Credenciales por Defecto
+
+| Rol   | Email                  | Password  |
+|-------|------------------------|-----------|
+| Admin | admin@streetbites.com  | Admin123! |
+
+## 📦 Scripts Disponibles
 
 ```bash
-ng build
+npm run start    # Servidor de desarrollo
+npm run build    # Build de producción
+npm run test     # Ejecutar tests
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## 🔧 Configuración
 
-## Running unit tests
+Editar `src/app/environments/environment.ts`:
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
+```typescript
+export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:5000'
+};
 ```
 
-## Running end-to-end tests
+## 📝 Licencia
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+MIT
