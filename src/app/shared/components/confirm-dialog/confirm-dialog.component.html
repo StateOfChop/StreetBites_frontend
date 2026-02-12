@@ -1,20 +1,26 @@
 @if (isOpen) {
 <!-- Overlay -->
-<div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50" (click)="onCancel()">
+<div class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 backdrop-blur-sm" (click)="onCancel()">
   <!-- Modal -->
-  <div class="bg-white rounded-lg shadow-lg p-6 max-w-md w-full mx-4" (click)="$event.stopPropagation()">
+  <div
+    class="bg-[rgba(26,26,46,0.98)] border-2 border-[#ff6b35] rounded-[20px] shadow-[0_0_30px_rgba(255,107,53,0.2),0_25px_50px_rgba(0,0,0,0.5)] p-6 max-w-md w-full mx-4"
+    (click)="$event.stopPropagation()">
     <!-- Header -->
-    <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ title }}</h3>
+    <h3
+      class="font-['Permanent_Marker',cursive,sans-serif] text-xl text-[#ff6b35] mb-2 [text-shadow:1px_1px_0_rgba(127,255,0,0.3)]">
+      {{ title }}</h3>
 
     <!-- Message -->
-    <p class="text-gray-600 mb-6">{{ message }}</p>
+    <p class="text-[#a0a0a0] mb-6">{{ message }}</p>
 
     <!-- Buttons -->
     <div class="flex justify-end space-x-3">
-      <button (click)="onCancel()" class="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300">
+      <button (click)="onCancel()"
+        class="bg-[rgba(255,255,255,0.05)] border border-[#333] text-gray-300 px-4 py-2 rounded-lg hover:bg-[rgba(255,255,255,0.1)] transition-all duration-300">
         {{ cancelText }}
       </button>
-      <button (click)="onConfirm()" [class]="'px-4 py-2 rounded ' + confirmButtonClass">
+      <button (click)="onConfirm()"
+        [class]="'px-4 py-2 rounded-lg font-semibold transition-all duration-300 ' + confirmButtonClass">
         {{ confirmText }}
       </button>
     </div>

@@ -1,70 +1,94 @@
-<div class="max-w-6xl mx-auto py-6 px-4">
-  <h1 class="text-2xl font-bold text-gray-900 mb-6">Mis Pedidos</h1>
+<div class="max-w-6xl mx-auto py-8 px-4 relative">
+  <!-- Decorative -->
+  <div
+    class="absolute w-[200px] h-[200px] bg-[#7fff00] rounded-full blur-[80px] opacity-10 -top-10 right-20 pointer-events-none">
+  </div>
+
+  <!-- Header with logo -->
+  <div class="flex items-center gap-4 mb-8">
+    <img src="assets/images/Street_Bites_Logo.png" alt="StreetBites"
+      class="w-14 h-14 drop-shadow-[0_0_15px_rgba(127,255,0,0.5)]">
+    <div>
+      <h1
+        class="font-['Permanent_Marker',cursive,sans-serif] text-4xl text-[#7fff00] [text-shadow:2px_2px_0_#ff6b35,4px_4px_0_rgba(0,0,0,0.3)]">
+        Mis Pedidos
+      </h1>
+      <p class="text-[#a0a0a0] text-sm mt-1 tracking-wider">📋 Historial de todos tus pedidos</p>
+    </div>
+  </div>
 
   <!-- Loading State -->
   @if (loading()) {
-  <div class="flex justify-center py-12">
-    <p class="text-gray-500">Cargando pedidos...</p>
+  <div class="flex flex-col items-center justify-center py-16">
+    <div class="w-12 h-12 border-4 border-[#333] border-t-[#7fff00] rounded-full animate-spin mb-4"></div>
+    <p class="text-[#7fff00] text-lg animate-pulse font-semibold">Cargando pedidos...</p>
   </div>
   }
 
   <!-- Error State -->
   @if (error()) {
-  <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-    <p class="text-red-600">{{ error() }}</p>
-    <button (click)="loadOrders()" class="mt-2 text-sm text-red-700 underline">
-      Reintentar
-    </button>
+  <div class="bg-[rgba(255,107,53,0.15)] border-2 border-[#ff6b35] rounded-[15px] p-5 mb-6 flex items-center gap-3">
+    <span class="text-2xl">⚠️</span>
+    <div>
+      <p class="text-[#ff6b35] font-semibold">{{ error() }}</p>
+      <button (click)="loadOrders()" class="mt-1 text-sm text-[#7fff00] underline hover:text-white transition-colors">
+        Reintentar
+      </button>
+    </div>
   </div>
   }
 
   <!-- Orders Table -->
   @if (!loading() && !error()) {
   @if (orders().length === 0) {
-  <div class="bg-white rounded-lg shadow p-8 text-center">
-    <p class="text-gray-500 mb-4">No tienes pedidos aún</p>
-    <a routerLink="/products" class="text-blue-600 hover:underline">
-      Ir a productos
+  <div class="bg-[rgba(26,26,46,0.95)] border-2 border-[#333] rounded-[20px] p-12 text-center">
+    <p class="text-6xl mb-4">📭</p>
+    <p class="text-[#a0a0a0] mb-2 text-xl font-semibold">No tienes pedidos aún</p>
+    <p class="text-[#666] text-sm mb-6">¡Es hora de probar algo del menú!</p>
+    <a routerLink="/products"
+      class="inline-block bg-gradient-to-r from-[#7fff00] to-[#32cd32] text-black px-8 py-3 rounded-lg font-bold uppercase tracking-wider transition-all duration-300 hover:shadow-[0_0_25px_rgba(127,255,0,0.4)] hover:-translate-y-1">
+      🍕 Ir al menú
     </a>
   </div>
   } @else {
-  <div class="bg-white rounded-lg shadow overflow-hidden">
+  <div class="bg-[rgba(26,26,46,0.95)] border-2 border-[#333] rounded-[20px] overflow-hidden">
     <table class="table-auto w-full">
-      <thead class="bg-gray-50">
+      <thead class="bg-[rgba(127,255,0,0.06)] border-b-2 border-[#333]">
         <tr>
-          <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">ID</th>
-          <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Fecha</th>
-          <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Estado</th>
-          <th class="px-4 py-3 text-right text-sm font-semibold text-gray-700">Total</th>
-          <th class="px-4 py-3 text-center text-sm font-semibold text-gray-700">Acciones</th>
+          <th class="px-5 py-4 text-left text-xs font-bold text-[#7fff00] uppercase tracking-[2px]">ID</th>
+          <th class="px-5 py-4 text-left text-xs font-bold text-[#7fff00] uppercase tracking-[2px]">Fecha</th>
+          <th class="px-5 py-4 text-left text-xs font-bold text-[#7fff00] uppercase tracking-[2px]">Estado</th>
+          <th class="px-5 py-4 text-right text-xs font-bold text-[#7fff00] uppercase tracking-[2px]">Total</th>
+          <th class="px-5 py-4 text-center text-xs font-bold text-[#7fff00] uppercase tracking-[2px]">Acciones</th>
         </tr>
       </thead>
       <tbody>
         @for (order of orders(); track order.id) {
-        <tr class="border-t border-gray-100 hover:bg-gray-50">
-          <td class="px-4 py-3 text-sm text-gray-600">
+        <tr class="border-t border-[#2a2a3e] hover:bg-[rgba(127,255,0,0.03)] transition-colors duration-300 group">
+          <td class="px-5 py-4 text-sm text-[#a0a0a0] font-mono">
             #{{ order.id | slice:0:8 }}
           </td>
-          <td class="px-4 py-3 text-sm text-gray-600">
+          <td class="px-5 py-4 text-sm text-[#a0a0a0]">
             {{ order.createdAt | date:'dd/MM/yyyy HH:mm' }}
           </td>
-          <td class="px-4 py-3">
-            <span class="px-2 py-1 rounded-full text-sm" [class]="getStatusClass(order.status)">
+          <td class="px-5 py-4">
+            <span class="px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider"
+              [class]="getStatusClass(order.status)">
               {{ getStatusLabel(order.status) }}
             </span>
           </td>
-          <td class="px-4 py-3 text-right text-sm font-semibold text-gray-900">
+          <td class="px-5 py-4 text-right text-sm font-bold text-[#7fff00]">
             {{ order.total | currency:'COP':'symbol-narrow':'1.0-0' }}
           </td>
-          <td class="px-4 py-3 text-center">
+          <td class="px-5 py-4 text-center">
             <div class="flex justify-center gap-2">
               <a [routerLink]="['/orders', order.id]"
-                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm">
+                class="bg-gradient-to-r from-[#7fff00] to-[#32cd32] text-black px-4 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-300 hover:shadow-[0_0_15px_rgba(127,255,0,0.3)] hover:-translate-y-0.5">
                 Ver detalle
               </a>
               @if (order.status === OrderStatus.PENDING) {
               <button (click)="openCancelDialog(order.id)"
-                class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 text-sm">
+                class="bg-[rgba(255,107,53,0.15)] border border-[#ff6b35] text-[#ff6b35] px-4 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-300 hover:bg-[#ff6b35] hover:text-white">
                 Cancelar
               </button>
               }
@@ -81,7 +105,7 @@
   <!-- Confirm Cancel Dialog -->
   <app-confirm-dialog [isOpen]="showCancelDialog()" title="Cancelar Pedido"
     message="¿Estás seguro de cancelar este pedido? Esta acción no se puede deshacer." confirmText="Sí, cancelar"
-    cancelText="No, mantener" confirmButtonClass="bg-red-600 text-white hover:bg-red-700"
+    cancelText="No, mantener" confirmButtonClass="bg-[#ff6b35] text-white hover:bg-red-600"
     (confirmed)="onConfirmCancel($event)">
   </app-confirm-dialog>
 </div>

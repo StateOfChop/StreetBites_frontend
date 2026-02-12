@@ -1,65 +1,114 @@
-<div class="max-w-7xl mx-auto py-6 px-4">
-  <h1 class="text-2xl font-bold text-gray-900 mb-6">Nuestros Productos</h1>
+<div class="max-w-7xl mx-auto py-8 px-4 relative">
+  <!-- Decorative paint splatter -->
+  <div
+    class="absolute w-[200px] h-[200px] bg-[#7fff00] rounded-full blur-[80px] opacity-15 -top-10 -right-10 pointer-events-none">
+  </div>
+  <div
+    class="absolute w-[150px] h-[150px] bg-[#ff6b35] rounded-full blur-[80px] opacity-10 bottom-20 -left-10 pointer-events-none">
+  </div>
+
+  <!-- Header with logo -->
+  <div class="flex items-center gap-4 mb-8">
+    <img src="assets/images/Street_Bites_Logo.png" alt="StreetBites"
+      class="w-14 h-14 drop-shadow-[0_0_15px_rgba(127,255,0,0.5)]">
+    <div>
+      <h1
+        class="font-['Permanent_Marker',cursive,sans-serif] text-4xl text-[#7fff00] [text-shadow:2px_2px_0_#ff6b35,4px_4px_0_rgba(0,0,0,0.3)]">
+        Nuestro Menú
+      </h1>
+      <p class="text-[#a0a0a0] text-sm mt-1 tracking-wider">🔥 Lo mejor de la calle, directo a tu mesa</p>
+    </div>
+  </div>
 
   <!-- Loading State -->
   @if (loading()) {
-  <div class="flex justify-center py-12">
-    <p class="text-gray-500">Cargando productos...</p>
+  <div class="flex flex-col items-center justify-center py-16">
+    <div class="w-12 h-12 border-4 border-[#333] border-t-[#7fff00] rounded-full animate-spin mb-4"></div>
+    <p class="text-[#7fff00] text-lg animate-pulse font-semibold">Cargando el menú...</p>
   </div>
   }
 
   <!-- Error State -->
   @if (error()) {
-  <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-    <p class="text-red-600">{{ error() }}</p>
-    <button (click)="loadProducts()" class="mt-2 text-sm text-red-700 underline">
-      Reintentar
-    </button>
+  <div class="bg-[rgba(255,107,53,0.15)] border-2 border-[#ff6b35] rounded-[15px] p-5 mb-6 flex items-center gap-3">
+    <span class="text-2xl">⚠️</span>
+    <div>
+      <p class="text-[#ff6b35] font-semibold">{{ error() }}</p>
+      <button (click)="loadProducts()" class="mt-1 text-sm text-[#7fff00] underline hover:text-white transition-colors">
+        Reintentar
+      </button>
+    </div>
   </div>
   }
 
   <!-- Product Grid -->
   @if (!loading() && !error()) {
   @if (products().length === 0) {
-  <div class="text-center py-12">
-    <p class="text-gray-500">No hay productos disponibles en este momento.</p>
+  <div class="bg-[rgba(26,26,46,0.95)] border-2 border-[#333] rounded-[20px] p-12 text-center">
+    <p class="text-5xl mb-4">😔</p>
+    <p class="text-[#a0a0a0] text-lg">No hay productos disponibles en este momento.</p>
+    <p class="text-[#666] text-sm mt-2">Vuelve pronto, estamos cocinando algo nuevo 🍳</p>
   </div>
   } @else {
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     @for (product of products(); track product.id) {
-    <div class="bg-white rounded-lg shadow p-4">
+    <div
+      class="bg-[rgba(26,26,46,0.95)] border-2 border-[#333] rounded-[20px] overflow-hidden transition-all duration-400 hover:border-[#7fff00] hover:shadow-[0_0_30px_rgba(127,255,0,0.15),0_10px_40px_rgba(0,0,0,0.3)] hover:-translate-y-1 group">
       <!-- Imagen del producto -->
       @if (product.imageUrl) {
-      <img [src]="product.imageUrl" [alt]="product.name" class="w-full h-48 object-cover rounded-lg mb-4">
+      <div class="relative overflow-hidden">
+        <img [src]="product.imageUrl" [alt]="product.name"
+          class="w-full h-52 object-cover group-hover:scale-105 transition-transform duration-500">
+        <div class="absolute inset-0 bg-gradient-to-t from-[rgba(26,26,46,0.8)] to-transparent"></div>
+        <!-- Price tag overlay -->
+        <div class="absolute bottom-3 right-3 bg-[rgba(0,0,0,0.7)] border border-[#7fff00] rounded-lg px-3 py-1">
+          <span class="text-[#7fff00] font-bold text-lg">{{ product.price | currency:'COP':'symbol-narrow':'1.0-0'
+            }}</span>
+        </div>
+      </div>
       } @else {
-      <div class="w-full h-48 bg-gray-200 rounded-lg mb-4 flex items-center justify-center">
-        <span class="text-gray-400">Sin imagen</span>
+      <div
+        class="relative w-full h-52 bg-gradient-to-br from-[rgba(127,255,0,0.05)] to-[rgba(255,107,53,0.05)] flex items-center justify-center border-b border-[#333]">
+        <span class="text-5xl opacity-50 group-hover:scale-110 transition-transform duration-300">🍔</span>
+        <div class="absolute bottom-3 right-3 bg-[rgba(0,0,0,0.7)] border border-[#7fff00] rounded-lg px-3 py-1">
+          <span class="text-[#7fff00] font-bold text-lg">{{ product.price | currency:'COP':'symbol-narrow':'1.0-0'
+            }}</span>
+        </div>
       </div>
       }
 
-      <!-- Información -->
-      <h3 class="text-lg font-semibold text-gray-900 mb-1">{{ product.name }}</h3>
-      <p class="text-gray-600 text-sm mb-2 line-clamp-2">{{ product.description }}</p>
-      <p class="text-xl font-bold text-blue-600 mb-2">{{ product.price | currency:'COP':'symbol-narrow':'1.0-0' }}</p>
+      <div class="p-5">
+        <!-- Información -->
+        <h3 class="text-lg font-bold text-white mb-1 group-hover:text-[#7fff00] transition-colors duration-300">{{
+          product.name }}</h3>
+        <p class="text-[#888] text-sm mb-4 line-clamp-2 leading-relaxed">{{ product.description }}</p>
 
-      <!-- Stock -->
-      <p class="text-sm mb-3" [class]="product.stock > 0 ? 'text-green-600' : 'text-red-600'">
-        @if (product.stock > 0) {
-        Stock: {{ product.stock }} disponibles
-        } @else {
-        Sin stock
-        }
-      </p>
+        <!-- Stock badge -->
+        <div class="mb-4">
+          @if (product.stock > 0) {
+          <span
+            class="inline-flex items-center gap-1 bg-[rgba(127,255,0,0.1)] border border-[rgba(127,255,0,0.3)] text-[#7fff00] text-xs font-semibold px-2.5 py-1 rounded-full">
+            📦 {{ product.stock }} disponibles
+          </span>
+          } @else {
+          <span
+            class="inline-flex items-center gap-1 bg-[rgba(255,107,53,0.1)] border border-[rgba(255,107,53,0.3)] text-[#ff6b35] text-xs font-semibold px-2.5 py-1 rounded-full">
+            ❌ Agotado
+          </span>
+          }
+        </div>
 
-      <!-- Cantidad y botón agregar -->
-      <div class="flex items-center gap-2">
-        <input type="number" [(ngModel)]="quantities[product.id]" min="1" [max]="product.stock"
-          class="border rounded px-3 py-2 w-20 text-center" [disabled]="product.stock === 0">
+        <!-- Cantidad y botón agregar -->
+        <div class="flex items-center gap-3">
+          <input type="number" [(ngModel)]="quantities[product.id]" min="1" [max]="product.stock"
+            class="bg-[rgba(255,255,255,0.05)] border-2 border-[#333] rounded-lg px-3 py-2.5 w-20 text-center text-white focus:outline-none focus:border-[#7fff00] focus:shadow-[0_0_10px_rgba(127,255,0,0.2)] transition-all duration-300 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+            [disabled]="product.stock === 0">
 
-        <button (click)="addToCart(product)" [disabled]="product.stock === 0 || !isValidQuantity(product)"
-          class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed">
-          Agregar al carrito
-        </button>
+          <button (click)="addToCart(product)" [disabled]="product.stock === 0 || !isValidQuantity(product)"
+            class="flex-1 bg-gradient-to-r from-[#7fff00] to-[#32cd32] text-black px-4 py-2.5 rounded-lg font-bold uppercase tracking-wider text-sm transition-all duration-300 hover:enabled:shadow-[0_0_25px_rgba(127,255,0,0.4)] hover:enabled:-translate-y-0.5 active:enabled:translate-y-0 disabled:opacity-30 disabled:cursor-not-allowed disabled:from-gray-700 disabled:to-gray-600 disabled:text-gray-400">
+            🛒 Agregar
+          </button>
+        </div>
       </div>
     </div>
     }

@@ -1,121 +1,164 @@
-<div class="max-w-7xl mx-auto py-6 px-4">
-  <h1 class="text-2xl font-bold text-gray-900 mb-6">Dashboard Administrador</h1>
+<div class="max-w-7xl mx-auto py-8 px-4 relative">
+  <!-- Decorative paint splatters -->
+  <div
+    class="absolute w-[250px] h-[250px] bg-[#ff6b35] rounded-full blur-[100px] opacity-10 -top-20 -right-20 pointer-events-none">
+  </div>
+  <div
+    class="absolute w-[200px] h-[200px] bg-[#7fff00] rounded-full blur-[80px] opacity-8 bottom-10 -left-20 pointer-events-none">
+  </div>
+
+  <!-- Admin Header -->
+  <div class="flex items-center gap-4 mb-10">
+    <img src="assets/images/Street_Bites_Logo.png" alt="StreetBites"
+      class="w-16 h-16 drop-shadow-[0_0_20px_rgba(255,107,53,0.5)]">
+    <div>
+      <div class="flex items-center gap-3">
+        <h1
+          class="font-['Permanent_Marker',cursive,sans-serif] text-4xl text-[#ff6b35] [text-shadow:2px_2px_0_#7fff00,4px_4px_0_rgba(0,0,0,0.3)]">
+          Admin Panel
+        </h1>
+        <span
+          class="bg-[rgba(255,107,53,0.2)] border-2 border-[#ff6b35] text-[#ff6b35] text-[10px] font-bold uppercase tracking-[3px] px-3 py-1 rounded-full">
+          ⚡ BOSS
+        </span>
+      </div>
+      <p class="text-[#a0a0a0] text-sm mt-1 tracking-wider">👑 Control total de tu negocio</p>
+    </div>
+  </div>
 
   <!-- Loading State -->
   @if (loading()) {
-  <div class="flex justify-center py-12">
-    <p class="text-gray-500">Cargando estadísticas...</p>
+  <div class="flex flex-col items-center justify-center py-16">
+    <div class="w-12 h-12 border-4 border-[#333] border-t-[#ff6b35] rounded-full animate-spin mb-4"></div>
+    <p class="text-[#ff6b35] text-lg animate-pulse font-semibold">Cargando estadísticas...</p>
   </div>
   }
 
   <!-- Error State -->
   @if (error()) {
-  <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-    <p class="text-red-600">{{ error() }}</p>
-    <button (click)="loadStats()" class="mt-2 text-sm text-red-700 underline">
-      Reintentar
-    </button>
+  <div class="bg-[rgba(255,107,53,0.15)] border-2 border-[#ff6b35] rounded-[15px] p-5 mb-6 flex items-center gap-3">
+    <span class="text-2xl">⚠️</span>
+    <div>
+      <p class="text-[#ff6b35] font-semibold">{{ error() }}</p>
+      <button (click)="loadStats()" class="mt-1 text-sm text-[#7fff00] underline hover:text-white transition-colors">
+        Reintentar
+      </button>
+    </div>
   </div>
   }
 
   <!-- Stats Cards -->
   @if (!loading() && !error()) {
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
     <!-- Pedidos de Hoy -->
-    <div class="bg-white rounded-lg shadow p-6">
-      <div class="flex items-center">
-        <div class="p-3 bg-blue-100 rounded-full mr-4">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-          </svg>
+    <div
+      class="bg-[rgba(26,26,46,0.95)] border-2 border-[#333] rounded-[20px] p-6 transition-all duration-400 hover:border-[#7fff00] hover:shadow-[0_0_25px_rgba(127,255,0,0.15)] hover:-translate-y-1 group relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-20 h-20 bg-[rgba(127,255,0,0.05)] rounded-bl-full pointer-events-none"></div>
+      <div class="flex items-center mb-3">
+        <div
+          class="p-3 bg-[rgba(127,255,0,0.12)] rounded-[12px] mr-4 group-hover:shadow-[0_0_20px_rgba(127,255,0,0.3)] transition-all duration-300">
+          <span class="text-2xl">📋</span>
         </div>
-        <div>
-          <p class="text-sm text-gray-500">Pedidos Hoy</p>
-          <p class="text-2xl font-bold text-gray-900">{{ stats().totalOrdersToday }}</p>
-        </div>
+        <p class="text-xs text-[#888] uppercase tracking-[2px] font-bold">Pedidos Hoy</p>
       </div>
+      <p
+        class="text-4xl font-bold text-[#7fff00] [text-shadow:0_0_15px_rgba(127,255,0,0.3)] font-['Permanent_Marker',cursive,sans-serif]">
+        {{ stats().totalOrdersToday }}</p>
     </div>
 
     <!-- Pedidos Pendientes -->
-    <div class="bg-white rounded-lg shadow p-6">
-      <div class="flex items-center">
-        <div class="p-3 bg-yellow-100 rounded-full mr-4">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-600" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        </div>
-        <div>
-          <p class="text-sm text-gray-500">Pendientes</p>
-          <p class="text-2xl font-bold text-gray-900">{{ stats().pendingOrders }}</p>
-        </div>
+    <div
+      class="bg-[rgba(26,26,46,0.95)] border-2 border-[#333] rounded-[20px] p-6 transition-all duration-400 hover:border-[#ff6b35] hover:shadow-[0_0_25px_rgba(255,107,53,0.15)] hover:-translate-y-1 group relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-20 h-20 bg-[rgba(255,107,53,0.05)] rounded-bl-full pointer-events-none">
       </div>
+      <div class="flex items-center mb-3">
+        <div
+          class="p-3 bg-[rgba(255,107,53,0.12)] rounded-[12px] mr-4 group-hover:shadow-[0_0_20px_rgba(255,107,53,0.3)] transition-all duration-300">
+          <span class="text-2xl">⏳</span>
+        </div>
+        <p class="text-xs text-[#888] uppercase tracking-[2px] font-bold">Pendientes</p>
+      </div>
+      <p
+        class="text-4xl font-bold text-[#ff6b35] [text-shadow:0_0_15px_rgba(255,107,53,0.3)] font-['Permanent_Marker',cursive,sans-serif]">
+        {{ stats().pendingOrders }}</p>
     </div>
 
     <!-- Productos Activos -->
-    <div class="bg-white rounded-lg shadow p-6">
-      <div class="flex items-center">
-        <div class="p-3 bg-green-100 rounded-full mr-4">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-          </svg>
+    <div
+      class="bg-[rgba(26,26,46,0.95)] border-2 border-[#333] rounded-[20px] p-6 transition-all duration-400 hover:border-[#7fff00] hover:shadow-[0_0_25px_rgba(127,255,0,0.15)] hover:-translate-y-1 group relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-20 h-20 bg-[rgba(127,255,0,0.05)] rounded-bl-full pointer-events-none"></div>
+      <div class="flex items-center mb-3">
+        <div
+          class="p-3 bg-[rgba(127,255,0,0.12)] rounded-[12px] mr-4 group-hover:shadow-[0_0_20px_rgba(127,255,0,0.3)] transition-all duration-300">
+          <span class="text-2xl">📦</span>
         </div>
-        <div>
-          <p class="text-sm text-gray-500">Productos Activos</p>
-          <p class="text-2xl font-bold text-gray-900">{{ stats().activeProducts }}</p>
-        </div>
+        <p class="text-xs text-[#888] uppercase tracking-[2px] font-bold">Productos</p>
       </div>
+      <p
+        class="text-4xl font-bold text-[#7fff00] [text-shadow:0_0_15px_rgba(127,255,0,0.3)] font-['Permanent_Marker',cursive,sans-serif]">
+        {{ stats().activeProducts }}</p>
     </div>
 
     <!-- Ventas del Día -->
-    <div class="bg-white rounded-lg shadow p-6">
-      <div class="flex items-center">
-        <div class="p-3 bg-purple-100 rounded-full mr-4">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
+    <div
+      class="bg-[rgba(26,26,46,0.95)] border-2 border-[#333] rounded-[20px] p-6 transition-all duration-400 hover:border-[#7fff00] hover:shadow-[0_0_25px_rgba(127,255,0,0.15)] hover:-translate-y-1 group relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-20 h-20 bg-[rgba(127,255,0,0.05)] rounded-bl-full pointer-events-none"></div>
+      <div class="flex items-center mb-3">
+        <div
+          class="p-3 bg-[rgba(127,255,0,0.12)] rounded-[12px] mr-4 group-hover:shadow-[0_0_20px_rgba(127,255,0,0.3)] transition-all duration-300">
+          <span class="text-2xl">💰</span>
         </div>
-        <div>
-          <p class="text-sm text-gray-500">Ventas Hoy</p>
-          <p class="text-2xl font-bold text-gray-900">
-            {{ stats().totalSalesToday | currency:'COP':'symbol-narrow':'1.0-0' }}
-          </p>
-        </div>
+        <p class="text-xs text-[#888] uppercase tracking-[2px] font-bold">Ventas Hoy</p>
       </div>
+      <p
+        class="text-3xl font-bold text-[#7fff00] [text-shadow:0_0_15px_rgba(127,255,0,0.3)] font-['Permanent_Marker',cursive,sans-serif]">
+        {{ stats().totalSalesToday | currency:'COP':'symbol-narrow':'1.0-0' }}
+      </p>
     </div>
   </div>
 
-  <!-- Quick Links -->
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <!-- Quick Links Section -->
+  <div class="mb-4">
+    <h2
+      class="font-['Permanent_Marker',cursive,sans-serif] text-2xl text-[#ff6b35] mb-5 [text-shadow:1px_1px_0_rgba(127,255,0,0.3)]">
+      ⚡ Acciones rápidas
+    </h2>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     <a routerLink="/admin/products"
-      class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow flex items-center justify-between">
-      <div>
-        <h3 class="text-lg font-semibold text-gray-900">Gestionar Productos</h3>
-        <p class="text-sm text-gray-500">Agregar, editar o desactivar productos</p>
+      class="bg-[rgba(26,26,46,0.95)] border-2 border-[#333] rounded-[20px] p-6 transition-all duration-400 hover:border-[#7fff00] hover:shadow-[0_0_25px_rgba(127,255,0,0.15)] hover:-translate-y-1 flex items-center justify-between group relative overflow-hidden">
+      <div
+        class="absolute inset-0 bg-gradient-to-r from-transparent to-[rgba(127,255,0,0.03)] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300">
       </div>
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24"
-        stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-      </svg>
+      <div class="flex items-center gap-4 relative z-10">
+        <div
+          class="p-3 bg-[rgba(127,255,0,0.12)] rounded-[12px] group-hover:shadow-[0_0_20px_rgba(127,255,0,0.3)] transition-all duration-300">
+          <span class="text-3xl">🍔</span>
+        </div>
+        <div>
+          <h3 class="text-lg font-bold text-white group-hover:text-[#7fff00] transition-colors">Gestionar Productos</h3>
+          <p class="text-sm text-[#888]">Agregar, editar o desactivar productos</p>
+        </div>
+      </div>
+      <span class="text-[#7fff00] text-2xl group-hover:translate-x-2 transition-transform relative z-10">→</span>
     </a>
 
     <a routerLink="/admin/orders"
-      class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow flex items-center justify-between">
-      <div>
-        <h3 class="text-lg font-semibold text-gray-900">Gestionar Pedidos</h3>
-        <p class="text-sm text-gray-500">Ver todos los pedidos y cambiar estados</p>
+      class="bg-[rgba(26,26,46,0.95)] border-2 border-[#333] rounded-[20px] p-6 transition-all duration-400 hover:border-[#ff6b35] hover:shadow-[0_0_25px_rgba(255,107,53,0.15)] hover:-translate-y-1 flex items-center justify-between group relative overflow-hidden">
+      <div
+        class="absolute inset-0 bg-gradient-to-r from-transparent to-[rgba(255,107,53,0.03)] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300">
       </div>
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24"
-        stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-      </svg>
+      <div class="flex items-center gap-4 relative z-10">
+        <div
+          class="p-3 bg-[rgba(255,107,53,0.12)] rounded-[12px] group-hover:shadow-[0_0_20px_rgba(255,107,53,0.3)] transition-all duration-300">
+          <span class="text-3xl">📋</span>
+        </div>
+        <div>
+          <h3 class="text-lg font-bold text-white group-hover:text-[#ff6b35] transition-colors">Gestionar Pedidos</h3>
+          <p class="text-sm text-[#888]">Ver todos los pedidos y cambiar estados</p>
+        </div>
+      </div>
+      <span class="text-[#ff6b35] text-2xl group-hover:translate-x-2 transition-transform relative z-10">→</span>
     </a>
   </div>
   }

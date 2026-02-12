@@ -100,15 +100,15 @@ export class ManageOrdersComponent implements OnInit {
     getStatusClass(status: OrderStatus): string {
         switch (status) {
             case OrderStatus.PENDING:
-                return 'bg-yellow-100 text-yellow-800';
+                return 'bg-[rgba(255,200,0,0.15)] text-yellow-400 border border-yellow-500';
             case OrderStatus.PREPARING:
-                return 'bg-blue-100 text-blue-800';
+                return 'bg-[rgba(100,149,237,0.15)] text-blue-400 border border-blue-500';
             case OrderStatus.DELIVERED:
-                return 'bg-green-100 text-green-800';
+                return 'bg-[rgba(127,255,0,0.15)] text-[#7fff00] border border-[#7fff00]';
             case OrderStatus.CANCELLED:
-                return 'bg-red-100 text-red-800';
+                return 'bg-[rgba(255,107,53,0.15)] text-[#ff6b35] border border-[#ff6b35]';
             default:
-                return 'bg-gray-100 text-gray-800';
+                return 'bg-[rgba(255,255,255,0.05)] text-gray-400 border border-gray-600';
         }
     }
 

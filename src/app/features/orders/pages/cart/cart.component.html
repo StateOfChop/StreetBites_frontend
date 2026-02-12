@@ -1,64 +1,91 @@
-<div class="max-w-4xl mx-auto py-6 px-4">
-  <h1 class="text-2xl font-bold text-gray-900 mb-6">Mi Carrito</h1>
+<div class="max-w-4xl mx-auto py-8 px-4 relative">
+  <!-- Decorative -->
+  <div
+    class="absolute w-[180px] h-[180px] bg-[#ff6b35] rounded-full blur-[80px] opacity-10 -top-10 -left-10 pointer-events-none">
+  </div>
+
+  <!-- Header with logo -->
+  <div class="flex items-center gap-4 mb-8">
+    <img src="assets/images/Street_Bites_Logo.png" alt="StreetBites"
+      class="w-14 h-14 drop-shadow-[0_0_15px_rgba(255,107,53,0.5)]">
+    <div>
+      <h1
+        class="font-['Permanent_Marker',cursive,sans-serif] text-4xl text-[#ff6b35] [text-shadow:2px_2px_0_#7fff00,4px_4px_0_rgba(0,0,0,0.3)]">
+        Mi Carrito
+      </h1>
+      <p class="text-[#a0a0a0] text-sm mt-1 tracking-wider">🛒 Revisa tu pedido antes de ordenar</p>
+    </div>
+  </div>
 
   <!-- Error State -->
   @if (error()) {
-  <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-    <p class="text-red-600">{{ error() }}</p>
+  <div class="bg-[rgba(255,107,53,0.15)] border-2 border-[#ff6b35] rounded-[15px] p-4 mb-6 flex items-center gap-3">
+    <span class="text-2xl">⚠️</span>
+    <p class="text-[#ff6b35]">{{ error() }}</p>
   </div>
   }
 
   <!-- Empty Cart -->
   @if (items().length === 0) {
-  <div class="bg-white rounded-lg shadow p-8 text-center">
-    <p class="text-gray-500 mb-4">Tu carrito está vacío</p>
-    <a routerLink="/products" class="text-blue-600 hover:underline">
-      Ver productos
+  <div class="bg-[rgba(26,26,46,0.95)] border-2 border-[#333] rounded-[20px] p-12 text-center">
+    <p class="text-6xl mb-4">🛒</p>
+    <p class="text-[#a0a0a0] mb-2 text-xl font-semibold">Tu carrito está vacío</p>
+    <p class="text-[#666] text-sm mb-6">¡Agrega algo delicioso del menú!</p>
+    <a routerLink="/products"
+      class="inline-block bg-gradient-to-r from-[#7fff00] to-[#32cd32] text-black px-8 py-3 rounded-lg font-bold uppercase tracking-wider transition-all duration-300 hover:shadow-[0_0_25px_rgba(127,255,0,0.4)] hover:-translate-y-1">
+      🍕 Ver menú
     </a>
   </div>
   } @else {
   <!-- Cart Items -->
-  <div class="bg-white rounded-lg shadow">
-    @for (item of items(); track item.productId) {
-    <div class="flex items-center p-4 border-b border-gray-100 last:border-b-0">
+  <div class="bg-[rgba(26,26,46,0.95)] border-2 border-[#333] rounded-[20px] overflow-hidden">
+    @for (item of items(); track item.productId; let idx = $index) {
+    <div
+      class="flex items-center p-5 border-b border-[#2a2a3e] last:border-b-0 hover:bg-[rgba(127,255,0,0.02)] transition-colors duration-300"
+      [class.bg-[rgba(255,255,255,0.01)]]="idx % 2 === 1">
       <!-- Imagen -->
       @if (item.productImageUrl) {
-      <img [src]="item.productImageUrl" [alt]="item.productName" class="w-20 h-20 object-cover rounded-lg mr-4">
+      <img [src]="item.productImageUrl" [alt]="item.productName"
+        class="w-20 h-20 object-cover rounded-[12px] mr-4 border border-[#333] shadow-lg">
       } @else {
-      <div class="w-20 h-20 bg-gray-200 rounded-lg mr-4 flex items-center justify-center">
-        <span class="text-gray-400 text-xs">Sin img</span>
+      <div
+        class="w-20 h-20 bg-gradient-to-br from-[rgba(127,255,0,0.05)] to-[rgba(255,107,53,0.05)] rounded-[12px] mr-4 flex items-center justify-center border border-[#333]">
+        <span class="text-3xl">🍔</span>
       </div>
       }
 
       <!-- Info del producto -->
-      <div class="flex-1">
-        <h3 class="font-semibold text-gray-900">{{ item.productName }}</h3>
-        <p class="text-blue-600 font-bold">{{ item.unitPrice | currency:'COP':'symbol-narrow':'1.0-0' }}</p>
+      <div class="flex-1 min-w-0">
+        <h3 class="font-bold text-white truncate">{{ item.productName }}</h3>
+        <p class="text-[#7fff00] font-bold text-sm">{{ item.unitPrice | currency:'COP':'symbol-narrow':'1.0-0' }} c/u
+        </p>
       </div>
 
       <!-- Controles de cantidad -->
-      <div class="flex items-center gap-2 mr-4">
+      <div class="flex items-center gap-1 mx-4">
         <button (click)="decrementQuantity(item.productId)" [disabled]="item.quantity <= 1"
-          class="w-8 h-8 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50">
-          -
+          class="w-9 h-9 rounded-lg bg-[rgba(255,255,255,0.05)] border border-[#333] text-white hover:bg-[rgba(255,107,53,0.2)] hover:border-[#ff6b35] hover:text-[#ff6b35] disabled:opacity-20 transition-all duration-300 flex items-center justify-center font-bold">
+          −
         </button>
-        <span class="w-8 text-center font-semibold">{{ item.quantity }}</span>
+        <span class="w-10 text-center font-bold text-white text-lg">{{ item.quantity }}</span>
         <button (click)="incrementQuantity(item.productId)" [disabled]="item.quantity >= item.stock"
-          class="w-8 h-8 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50">
+          class="w-9 h-9 rounded-lg bg-[rgba(255,255,255,0.05)] border border-[#333] text-white hover:bg-[rgba(127,255,0,0.2)] hover:border-[#7fff00] hover:text-[#7fff00] disabled:opacity-20 transition-all duration-300 flex items-center justify-center font-bold">
           +
         </button>
       </div>
 
       <!-- Subtotal -->
-      <div class="w-28 text-right mr-4">
-        <p class="font-bold text-gray-900">
+      <div class="w-28 text-right mx-3">
+        <p class="font-bold text-[#7fff00] text-lg [text-shadow:0_0_8px_rgba(127,255,0,0.2)]">
           {{ item.unitPrice * item.quantity | currency:'COP':'symbol-narrow':'1.0-0' }}
         </p>
       </div>
 
       <!-- Eliminar -->
-      <button (click)="removeItem(item.productId)" class="text-red-500 hover:text-red-700 p-2">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <button (click)="removeItem(item.productId)"
+        class="text-[#666] hover:text-[#ff6b35] p-2.5 transition-all duration-300 hover:bg-[rgba(255,107,53,0.1)] rounded-lg group">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:scale-110 transition-transform" fill="none"
+          viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
         </svg>
@@ -68,20 +95,25 @@
   </div>
 
   <!-- Total y Checkout -->
-  <div class="bg-white rounded-lg shadow mt-4 p-6">
-    <div class="flex justify-between items-center mb-4">
-      <span class="text-lg font-semibold text-gray-900">Total:</span>
-      <span class="text-2xl font-bold text-blue-600">
+  <div
+    class="bg-[rgba(26,26,46,0.95)] border-2 border-[#7fff00] rounded-[20px] mt-5 p-6 shadow-[0_0_25px_rgba(127,255,0,0.1)] relative overflow-hidden">
+    <div
+      class="absolute w-[100px] h-[100px] bg-[#7fff00] rounded-full blur-[60px] opacity-10 -top-5 -right-5 pointer-events-none">
+    </div>
+    <div class="flex justify-between items-center mb-5 relative z-10">
+      <span class="text-lg font-bold text-white uppercase tracking-wider">Total del pedido:</span>
+      <span
+        class="text-3xl font-bold text-[#7fff00] [text-shadow:0_0_20px_rgba(127,255,0,0.4)] font-['Permanent_Marker',cursive,sans-serif]">
         {{ total() | currency:'COP':'symbol-narrow':'1.0-0' }}
       </span>
     </div>
 
     <button (click)="openCheckoutConfirm()" [disabled]="loading()"
-      class="w-full bg-blue-600 text-white px-4 py-3 rounded hover:bg-blue-700 disabled:bg-gray-300 font-semibold">
+      class="w-full bg-gradient-to-r from-[#ff6b35] to-[#ff8c00] text-white px-4 py-4 rounded-[12px] font-bold text-lg uppercase tracking-[3px] transition-all duration-300 hover:enabled:shadow-[0_0_35px_rgba(255,107,53,0.5)] hover:enabled:-translate-y-0.5 active:enabled:translate-y-0 disabled:opacity-40 disabled:cursor-not-allowed relative z-10">
       @if (loading()) {
-      Procesando...
+      ⏳ Procesando...
       } @else {
-      Realizar Pedido
+      🔥 Realizar Pedido
       }
     </button>
   </div>

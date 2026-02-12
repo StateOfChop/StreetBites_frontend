@@ -1,47 +1,69 @@
-<div class="max-w-4xl mx-auto py-6 px-4">
+<div class="max-w-4xl mx-auto py-8 px-4 relative">
+  <!-- Decorative -->
+  <div
+    class="absolute w-[150px] h-[150px] bg-[#ff6b35] rounded-full blur-[80px] opacity-10 -top-5 right-10 pointer-events-none">
+  </div>
+
   <!-- Back button -->
-  <a routerLink="/orders" class="text-blue-600 hover:underline mb-4 inline-block">
-    ← Volver a mis pedidos
+  <a routerLink="/orders"
+    class="inline-flex items-center gap-2 text-[#7fff00] hover:text-[#ff6b35] mb-6 transition-colors duration-300 font-semibold text-sm uppercase tracking-wider group">
+    <span class="group-hover:-translate-x-1 transition-transform">←</span> Volver a mis pedidos
   </a>
 
-  <h1 class="text-2xl font-bold text-gray-900 mb-6">Detalle del Pedido</h1>
+  <!-- Header with logo -->
+  <div class="flex items-center gap-4 mb-8">
+    <img src="assets/images/Street_Bites_Logo.png" alt="StreetBites"
+      class="w-14 h-14 drop-shadow-[0_0_15px_rgba(255,107,53,0.5)]">
+    <div>
+      <h1
+        class="font-['Permanent_Marker',cursive,sans-serif] text-4xl text-[#ff6b35] [text-shadow:2px_2px_0_#7fff00,4px_4px_0_rgba(0,0,0,0.3)]">
+        Detalle del Pedido
+      </h1>
+      <p class="text-[#a0a0a0] text-sm mt-1 tracking-wider">📦 Información completa de tu orden</p>
+    </div>
+  </div>
 
   <!-- Loading State -->
   @if (loading()) {
-  <div class="flex justify-center py-12">
-    <p class="text-gray-500">Cargando pedido...</p>
+  <div class="flex flex-col items-center justify-center py-16">
+    <div class="w-12 h-12 border-4 border-[#333] border-t-[#ff6b35] rounded-full animate-spin mb-4"></div>
+    <p class="text-[#ff6b35] text-lg animate-pulse font-semibold">Cargando pedido...</p>
   </div>
   }
 
   <!-- Error State -->
   @if (error()) {
-  <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-    <p class="text-red-600">{{ error() }}</p>
+  <div class="bg-[rgba(255,107,53,0.15)] border-2 border-[#ff6b35] rounded-[15px] p-5 mb-6 flex items-center gap-3">
+    <span class="text-2xl">⚠️</span>
+    <p class="text-[#ff6b35] font-semibold">{{ error() }}</p>
   </div>
   }
 
   <!-- Order Details -->
   @if (order()) {
   <!-- Order Info Card -->
-  <div class="bg-white rounded-lg shadow p-6 mb-6">
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-      <div>
-        <p class="text-sm text-gray-500">ID del Pedido</p>
-        <p class="font-semibold text-gray-900">#{{ order()!.id | slice:0:8 }}</p>
+  <div class="bg-[rgba(26,26,46,0.95)] border-2 border-[#333] rounded-[20px] p-6 mb-6">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+      <div class="bg-[rgba(255,255,255,0.02)] rounded-[12px] p-4 border border-[#2a2a3e]">
+        <p class="text-xs text-[#888] uppercase tracking-[2px] mb-2">ID del Pedido</p>
+        <p class="font-bold text-white font-mono text-lg">#{{ order()!.id | slice:0:8 }}</p>
       </div>
-      <div>
-        <p class="text-sm text-gray-500">Fecha</p>
-        <p class="font-semibold text-gray-900">{{ order()!.createdAt | date:'dd/MM/yyyy HH:mm' }}</p>
+      <div class="bg-[rgba(255,255,255,0.02)] rounded-[12px] p-4 border border-[#2a2a3e]">
+        <p class="text-xs text-[#888] uppercase tracking-[2px] mb-2">Fecha</p>
+        <p class="font-bold text-white">{{ order()!.createdAt | date:'dd/MM/yyyy' }}</p>
+        <p class="text-[#a0a0a0] text-xs">{{ order()!.createdAt | date:'HH:mm' }} hrs</p>
       </div>
-      <div>
-        <p class="text-sm text-gray-500">Estado</p>
-        <span class="inline-block px-2 py-1 rounded-full text-sm mt-1" [class]="getStatusClass(order()!.status)">
+      <div class="bg-[rgba(255,255,255,0.02)] rounded-[12px] p-4 border border-[#2a2a3e]">
+        <p class="text-xs text-[#888] uppercase tracking-[2px] mb-2">Estado</p>
+        <span class="inline-block px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mt-1"
+          [class]="getStatusClass(order()!.status)">
           {{ getStatusLabel(order()!.status) }}
         </span>
       </div>
-      <div>
-        <p class="text-sm text-gray-500">Total</p>
-        <p class="font-bold text-xl text-blue-600">
+      <div class="bg-[rgba(255,255,255,0.02)] rounded-[12px] p-4 border border-[#2a2a3e]">
+        <p class="text-xs text-[#888] uppercase tracking-[2px] mb-2">Total</p>
+        <p
+          class="font-bold text-2xl text-[#7fff00] [text-shadow:0_0_10px_rgba(127,255,0,0.3)] font-['Permanent_Marker',cursive,sans-serif]">
           {{ order()!.total | currency:'COP':'symbol-narrow':'1.0-0' }}
         </p>
       </div>
@@ -49,35 +71,43 @@
   </div>
 
   <!-- Order Items Table -->
-  <div class="bg-white rounded-lg shadow overflow-hidden mb-6">
-    <h3 class="text-lg font-semibold text-gray-900 p-4 border-b">Productos</h3>
+  <div class="bg-[rgba(26,26,46,0.95)] border-2 border-[#333] rounded-[20px] overflow-hidden mb-6">
+    <div class="flex items-center gap-2 p-4 border-b-2 border-[#333] bg-[rgba(127,255,0,0.04)]">
+      <span class="text-xl">🍕</span>
+      <h3 class="text-lg font-bold text-[#7fff00] uppercase tracking-wider">Productos ordenados</h3>
+    </div>
     <table class="table-auto w-full">
-      <thead class="bg-gray-50">
+      <thead class="bg-[rgba(127,255,0,0.06)]">
         <tr>
-          <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Producto</th>
-          <th class="px-4 py-3 text-center text-sm font-semibold text-gray-700">Cantidad</th>
-          <th class="px-4 py-3 text-right text-sm font-semibold text-gray-700">Precio Unit.</th>
-          <th class="px-4 py-3 text-right text-sm font-semibold text-gray-700">Subtotal</th>
+          <th class="px-5 py-3 text-left text-xs font-bold text-[#7fff00] uppercase tracking-[2px]">Producto</th>
+          <th class="px-5 py-3 text-center text-xs font-bold text-[#7fff00] uppercase tracking-[2px]">Cantidad</th>
+          <th class="px-5 py-3 text-right text-xs font-bold text-[#7fff00] uppercase tracking-[2px]">Precio Unit.</th>
+          <th class="px-5 py-3 text-right text-xs font-bold text-[#7fff00] uppercase tracking-[2px]">Subtotal</th>
         </tr>
       </thead>
       <tbody>
         @for (item of order()!.items; track item.productId) {
-        <tr class="border-t border-gray-100">
-          <td class="px-4 py-3 text-sm text-gray-900">{{ item.product?.name || item.productName || item.productId }}</td>
-          <td class="px-4 py-3 text-center text-sm text-gray-600">{{ item.quantity }}</td>
-          <td class="px-4 py-3 text-right text-sm text-gray-600">
+        <tr class="border-t border-[#2a2a3e] hover:bg-[rgba(127,255,0,0.02)] transition-colors">
+          <td class="px-5 py-4 text-sm text-white font-semibold">{{ item.product?.name || item.productName ||
+            item.productId }}</td>
+          <td class="px-5 py-4 text-center">
+            <span
+              class="bg-[rgba(255,255,255,0.05)] border border-[#333] rounded-lg px-3 py-1 text-white text-sm font-bold">{{
+              item.quantity }}</span>
+          </td>
+          <td class="px-5 py-4 text-right text-sm text-[#a0a0a0]">
             {{ item.price | currency:'COP':'symbol-narrow':'1.0-0' }}
           </td>
-          <td class="px-4 py-3 text-right text-sm font-semibold text-gray-900">
+          <td class="px-5 py-4 text-right text-sm font-bold text-[#7fff00]">
             {{ (item.price * item.quantity) | currency:'COP':'symbol-narrow':'1.0-0' }}
           </td>
         </tr>
         }
       </tbody>
-      <tfoot class="bg-gray-50">
+      <tfoot class="bg-[rgba(127,255,0,0.06)] border-t-2 border-[#333]">
         <tr>
-          <td colspan="3" class="px-4 py-3 text-right font-semibold text-gray-900">Total:</td>
-          <td class="px-4 py-3 text-right font-bold text-blue-600">
+          <td colspan="3" class="px-5 py-4 text-right font-bold text-white uppercase tracking-wider">Total:</td>
+          <td class="px-5 py-4 text-right font-bold text-[#7fff00] text-xl [text-shadow:0_0_10px_rgba(127,255,0,0.3)]">
             {{ order()!.total | currency:'COP':'symbol-narrow':'1.0-0' }}
           </td>
         </tr>
@@ -88,8 +118,9 @@
   <!-- Cancel Button (only for PENDING) -->
   @if (order()!.status === OrderStatus.PENDING) {
   <div class="flex justify-end">
-    <button (click)="openCancelDialog()" class="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600">
-      Cancelar Pedido
+    <button (click)="openCancelDialog()"
+      class="bg-[rgba(255,107,53,0.15)] border-2 border-[#ff6b35] text-[#ff6b35] px-8 py-3 rounded-lg font-bold uppercase tracking-wider transition-all duration-300 hover:bg-[#ff6b35] hover:text-white hover:shadow-[0_0_25px_rgba(255,107,53,0.4)] hover:-translate-y-0.5">
+      ❌ Cancelar Pedido
     </button>
   </div>
   }
@@ -98,7 +129,7 @@
   <!-- Confirm Cancel Dialog -->
   <app-confirm-dialog [isOpen]="showCancelDialog()" title="Cancelar Pedido"
     message="¿Estás seguro de cancelar este pedido? Esta acción no se puede deshacer." confirmText="Sí, cancelar"
-    cancelText="No, mantener" confirmButtonClass="bg-red-600 text-white hover:bg-red-700"
+    cancelText="No, mantener" confirmButtonClass="bg-[#ff6b35] text-white hover:bg-red-600"
     (confirmed)="onConfirmCancel($event)">
   </app-confirm-dialog>
 </div>
