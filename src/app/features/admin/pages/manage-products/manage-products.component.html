@@ -93,9 +93,12 @@
             </span>
           </td>
           <td class="px-5 py-4 text-center">
-            <span class="px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider"
+            <span
+              class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider"
               [class]="product.isActive ? 'bg-[rgba(127,255,0,0.12)] text-[#7fff00] border border-[rgba(127,255,0,0.4)]' : 'bg-[rgba(255,107,53,0.12)] text-[#ff6b35] border border-[rgba(255,107,53,0.4)]'">
-              {{ product.isActive ? '✅ Activo' : '❌ Inactivo' }}
+              <span class="w-2 h-2 rounded-full"
+                [class]="product.isActive ? 'bg-[#7fff00] shadow-[0_0_6px_rgba(127,255,0,0.6)]' : 'bg-[#ff6b35] shadow-[0_0_6px_rgba(255,107,53,0.6)]'"></span>
+              {{ product.isActive ? 'Activo' : 'Inactivo' }}
             </span>
           </td>
           <td class="px-5 py-4 text-center">
@@ -108,7 +111,7 @@
                 [class]="product.isActive
                 ? 'bg-[rgba(255,107,53,0.1)] border border-[rgba(255,107,53,0.4)] text-[#ff6b35] px-3 py-1.5 rounded-lg hover:bg-[#ff6b35] hover:text-white text-xs font-bold uppercase tracking-wider transition-all duration-300'
                 : 'bg-[rgba(127,255,0,0.1)] border border-[rgba(127,255,0,0.4)] text-[#7fff00] px-3 py-1.5 rounded-lg hover:bg-[#7fff00] hover:text-black text-xs font-bold uppercase tracking-wider transition-all duration-300'">
-                {{ product.isActive ? '🚫 Desactivar' : '✅ Activar' }}
+                {{ product.isActive ? 'Desactivar' : 'Activar' }}
               </button>
             </div>
           </td>

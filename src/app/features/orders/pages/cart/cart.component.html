@@ -1,127 +1,175 @@
-<div class="max-w-4xl mx-auto py-8 px-4 relative">
-  <!-- Decorative -->
-  <div
-    class="absolute w-[180px] h-[180px] bg-[#ff6b35] rounded-full blur-[80px] opacity-10 -top-10 -left-10 pointer-events-none">
-  </div>
-
-  <!-- Header with logo -->
-  <div class="flex items-center gap-4 mb-8">
-    <img src="assets/images/Street_Bites_Logo.png" alt="StreetBites"
-      class="w-14 h-14 drop-shadow-[0_0_15px_rgba(255,107,53,0.5)]">
-    <div>
-      <h1
-        class="font-['Permanent_Marker',cursive,sans-serif] text-4xl text-[#ff6b35] [text-shadow:2px_2px_0_#7fff00,4px_4px_0_rgba(0,0,0,0.3)]">
-        Mi Carrito
-      </h1>
-      <p class="text-[#a0a0a0] text-sm mt-1 tracking-wider">🛒 Revisa tu pedido antes de ordenar</p>
+<div class="min-h-screen relative overflow-hidden">
+  <!-- ═══════ GRAFFITI BACKGROUND ═══════ -->
+  <div class="absolute inset-0 pointer-events-none overflow-hidden">
+    <div class="absolute w-[250px] h-[250px] bg-[#ff6b35] rounded-full blur-[100px] opacity-[0.06] -top-20 -left-20">
+    </div>
+    <div class="absolute w-[200px] h-[200px] bg-[#7fff00] rounded-full blur-[80px] opacity-[0.05] bottom-20 right-10">
+    </div>
+    <!-- Paint drips -->
+    <div
+      class="absolute top-0 right-[15%] w-[2px] h-[100px] bg-gradient-to-b from-[#ff6b35] to-transparent opacity-20 rotate-[8deg]">
+    </div>
+    <div
+      class="absolute top-0 right-[35%] w-[3px] h-[60px] bg-gradient-to-b from-[#7fff00] to-transparent opacity-15 rotate-[-5deg]">
     </div>
   </div>
 
-  <!-- Error State -->
-  @if (error()) {
-  <div class="bg-[rgba(255,107,53,0.15)] border-2 border-[#ff6b35] rounded-[15px] p-4 mb-6 flex items-center gap-3">
-    <span class="text-2xl">⚠️</span>
-    <p class="text-[#ff6b35]">{{ error() }}</p>
-  </div>
-  }
+  <div class="max-w-4xl mx-auto py-8 px-4 relative z-10">
+    <!-- ═══════ HEADER ═══════ -->
+    <div class="mb-10">
+      <div class="flex items-center gap-5 mb-3">
+        <img src="assets/images/Street_Bites_Logo.png" alt="StreetBites"
+          class="w-20 h-20 drop-shadow-[0_0_25px_rgba(255,107,53,0.5)] hover:scale-110 transition-transform duration-500">
+        <div>
+          <h1
+            class="font-['Permanent_Marker',cursive,sans-serif] text-5xl md:text-6xl text-[#ff6b35] [text-shadow:3px_3px_0_#7fff00,6px_6px_0_rgba(0,0,0,0.4)] leading-tight">
+            Mi Carrito
+          </h1>
+          <div class="flex items-center gap-3 mt-2">
+            <div class="h-[3px] w-12 bg-gradient-to-r from-[#ff6b35] to-transparent rounded-full"></div>
+            <p class="text-[#a0a0a0] text-sm tracking-[3px] uppercase font-semibold">
+              Revisa tu pedido 🛒
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="h-[4px] bg-gradient-to-r from-[#ff6b35] via-[#7fff00] to-transparent rounded-full mt-2 max-w-sm">
+      </div>
+    </div>
 
-  <!-- Empty Cart -->
-  @if (items().length === 0) {
-  <div class="bg-[rgba(26,26,46,0.95)] border-2 border-[#333] rounded-[20px] p-12 text-center">
-    <p class="text-6xl mb-4">🛒</p>
-    <p class="text-[#a0a0a0] mb-2 text-xl font-semibold">Tu carrito está vacío</p>
-    <p class="text-[#666] text-sm mb-6">¡Agrega algo delicioso del menú!</p>
-    <a routerLink="/products"
-      class="inline-block bg-gradient-to-r from-[#7fff00] to-[#32cd32] text-black px-8 py-3 rounded-lg font-bold uppercase tracking-wider transition-all duration-300 hover:shadow-[0_0_25px_rgba(127,255,0,0.4)] hover:-translate-y-1">
-      🍕 Ver menú
-    </a>
-  </div>
-  } @else {
-  <!-- Cart Items -->
-  <div class="bg-[rgba(26,26,46,0.95)] border-2 border-[#333] rounded-[20px] overflow-hidden">
-    @for (item of items(); track item.productId; let idx = $index) {
+    <!-- Error State -->
+    @if (error()) {
     <div
-      class="flex items-center p-5 border-b border-[#2a2a3e] last:border-b-0 hover:bg-[rgba(127,255,0,0.02)] transition-colors duration-300"
-      [class.bg-[rgba(255,255,255,0.01)]]="idx % 2 === 1">
-      <!-- Imagen -->
-      @if (item.productImageUrl) {
-      <img [src]="item.productImageUrl" [alt]="item.productName"
-        class="w-20 h-20 object-cover rounded-[12px] mr-4 border border-[#333] shadow-lg">
-      } @else {
+      class="bg-[rgba(255,107,53,0.1)] border-2 border-[#ff6b35] rounded-[20px] p-5 mb-6 flex items-center gap-4 backdrop-blur-sm">
+      <div class="text-3xl animate-bounce">💀</div>
+      <div>
+        <p class="text-[#ff6b35] font-bold font-['Permanent_Marker',cursive,sans-serif]">¡Error!</p>
+        <p class="text-[#a0a0a0] text-sm">{{ error() }}</p>
+      </div>
+    </div>
+    }
+
+    <!-- Empty Cart -->
+    @if (items().length === 0) {
+    <div
+      class="bg-[rgba(26,26,46,0.95)] border-2 border-dashed border-[#333] rounded-[25px] p-16 text-center backdrop-blur-sm">
+      <p class="text-7xl mb-6 animate-pulse">🛒</p>
+      <p class="text-white text-2xl font-['Permanent_Marker',cursive,sans-serif] mb-2">¡Carrito vacío!</p>
+      <p class="text-[#666] text-sm mb-8">¡Agrega algo del menú, no seas tímido!</p>
+      <a routerLink="/products"
+        class="inline-block bg-gradient-to-r from-[#7fff00] to-[#32cd32] text-black px-10 py-4 rounded-xl font-black uppercase tracking-[3px] text-sm transition-all duration-300 hover:shadow-[0_0_35px_rgba(127,255,0,0.5)] hover:-translate-y-1 hover:scale-105 active:translate-y-0 active:scale-100"
+        style="text-shadow: 0 1px 0 rgba(0,0,0,0.1);">
+        🍕 Ver Menú
+      </a>
+    </div>
+    } @else {
+
+    <!-- ═══════ CART ITEMS ═══════ -->
+    <div class="bg-[rgba(26,26,46,0.95)] border-2 border-[#2a2a3e] rounded-[20px] overflow-hidden backdrop-blur-sm">
+      <!-- Table header -->
+      <div class="bg-[rgba(127,255,0,0.04)] border-b-2 border-[#2a2a3e] px-5 py-3 flex items-center gap-2">
+        <span class="text-lg">🍽️</span>
+        <span class="text-xs font-black text-[#7fff00] uppercase tracking-[3px]">Tus productos</span>
+        <span class="text-[10px] text-[#555] ml-auto uppercase tracking-wider">{{ items().length }} items</span>
+      </div>
+
+      @for (item of items(); track item.productId; let idx = $index) {
       <div
-        class="w-20 h-20 bg-gradient-to-br from-[rgba(127,255,0,0.05)] to-[rgba(255,107,53,0.05)] rounded-[12px] mr-4 flex items-center justify-center border border-[#333]">
-        <span class="text-3xl">🍔</span>
+        class="flex items-center p-5 border-b border-[#1e1e35] last:border-b-0 hover:bg-[rgba(127,255,0,0.02)] transition-all duration-300 group"
+        [class.bg-[rgba(255,255,255,0.01)]]="idx % 2 === 1">
+
+        <!-- Product image -->
+        @if (item.productImageUrl) {
+        <img [src]="item.productImageUrl" [alt]="item.productName"
+          class="w-20 h-20 object-cover rounded-2xl mr-4 border-2 border-[#2a2a3e] shadow-lg group-hover:border-[#7fff00] group-hover:shadow-[0_0_15px_rgba(127,255,0,0.15)] transition-all duration-300">
+        } @else {
+        <div
+          class="w-20 h-20 bg-gradient-to-br from-[rgba(127,255,0,0.03)] to-[rgba(255,107,53,0.03)] rounded-2xl mr-4 flex items-center justify-center border-2 border-[#2a2a3e] group-hover:border-[#333]">
+          <span class="text-3xl opacity-50">🍔</span>
+        </div>
+        }
+
+        <!-- Product info -->
+        <div class="flex-1 min-w-0">
+          <h3 class="font-bold text-white truncate text-lg group-hover:text-[#7fff00] transition-colors">{{
+            item.productName }}</h3>
+          <p class="text-[#7fff00] font-['Permanent_Marker',cursive,sans-serif] text-sm mt-0.5">{{ item.unitPrice |
+            currency:'COP':'symbol-narrow':'1.0-0' }} c/u</p>
+        </div>
+
+        <!-- Quantity controls -->
+        <div class="flex items-center gap-1 mx-4">
+          <button (click)="decrementQuantity(item.productId)" [disabled]="item.quantity <= 1"
+            class="w-10 h-10 rounded-xl bg-[rgba(255,255,255,0.03)] border-2 border-[#2a2a3e] text-white hover:bg-[rgba(255,107,53,0.15)] hover:border-[#ff6b35] hover:text-[#ff6b35] disabled:opacity-20 transition-all duration-300 flex items-center justify-center font-black text-lg">
+            −
+          </button>
+          <span class="w-12 text-center font-black text-white text-xl font-['Permanent_Marker',cursive,sans-serif]">{{
+            item.quantity }}</span>
+          <button (click)="incrementQuantity(item.productId)" [disabled]="item.quantity >= item.stock"
+            class="w-10 h-10 rounded-xl bg-[rgba(255,255,255,0.03)] border-2 border-[#2a2a3e] text-white hover:bg-[rgba(127,255,0,0.15)] hover:border-[#7fff00] hover:text-[#7fff00] disabled:opacity-20 transition-all duration-300 flex items-center justify-center font-black text-lg">
+            +
+          </button>
+        </div>
+
+        <!-- Subtotal -->
+        <div class="w-32 text-right mx-3">
+          <p
+            class="font-bold text-[#7fff00] text-lg font-['Permanent_Marker',cursive,sans-serif] [text-shadow:0_0_10px_rgba(127,255,0,0.2)]">
+            {{ item.unitPrice * item.quantity | currency:'COP':'symbol-narrow':'1.0-0' }}
+          </p>
+        </div>
+
+        <!-- Remove button -->
+        <button (click)="removeItem(item.productId)"
+          class="text-[#555] hover:text-[#ff6b35] p-3 transition-all duration-300 hover:bg-[rgba(255,107,53,0.1)] rounded-xl group/del">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover/del:scale-110 transition-transform"
+            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+          </svg>
+        </button>
       </div>
       }
+    </div>
 
-      <!-- Info del producto -->
-      <div class="flex-1 min-w-0">
-        <h3 class="font-bold text-white truncate">{{ item.productName }}</h3>
-        <p class="text-[#7fff00] font-bold text-sm">{{ item.unitPrice | currency:'COP':'symbol-narrow':'1.0-0' }} c/u
-        </p>
+    <!-- ═══════ TOTAL & CHECKOUT ═══════ -->
+    <div
+      class="bg-[rgba(26,26,46,0.95)] border-2 border-[#7fff00] rounded-[20px] mt-6 p-7 shadow-[0_0_40px_rgba(127,255,0,0.1)] relative overflow-hidden backdrop-blur-sm">
+      <!-- Decorative elements -->
+      <div
+        class="absolute w-[120px] h-[120px] bg-[#7fff00] rounded-full blur-[80px] opacity-[0.08] -top-10 -right-10 pointer-events-none">
+      </div>
+      <div
+        class="absolute w-[80px] h-[80px] bg-[#ff6b35] rounded-full blur-[60px] opacity-[0.06] -bottom-5 -left-5 pointer-events-none">
       </div>
 
-      <!-- Controles de cantidad -->
-      <div class="flex items-center gap-1 mx-4">
-        <button (click)="decrementQuantity(item.productId)" [disabled]="item.quantity <= 1"
-          class="w-9 h-9 rounded-lg bg-[rgba(255,255,255,0.05)] border border-[#333] text-white hover:bg-[rgba(255,107,53,0.2)] hover:border-[#ff6b35] hover:text-[#ff6b35] disabled:opacity-20 transition-all duration-300 flex items-center justify-center font-bold">
-          −
-        </button>
-        <span class="w-10 text-center font-bold text-white text-lg">{{ item.quantity }}</span>
-        <button (click)="incrementQuantity(item.productId)" [disabled]="item.quantity >= item.stock"
-          class="w-9 h-9 rounded-lg bg-[rgba(255,255,255,0.05)] border border-[#333] text-white hover:bg-[rgba(127,255,0,0.2)] hover:border-[#7fff00] hover:text-[#7fff00] disabled:opacity-20 transition-all duration-300 flex items-center justify-center font-bold">
-          +
-        </button>
+      <div class="flex justify-between items-center mb-6 relative z-10">
+        <div>
+          <span class="text-xs font-black text-[#888] uppercase tracking-[3px] block mb-1">Total del pedido</span>
+          <div class="h-[2px] w-20 bg-gradient-to-r from-[#7fff00] to-transparent rounded-full"></div>
+        </div>
+        <span
+          class="text-4xl font-bold text-[#7fff00] [text-shadow:0_0_25px_rgba(127,255,0,0.4)] font-['Permanent_Marker',cursive,sans-serif]">
+          {{ total() | currency:'COP':'symbol-narrow':'1.0-0' }}
+        </span>
       </div>
 
-      <!-- Subtotal -->
-      <div class="w-28 text-right mx-3">
-        <p class="font-bold text-[#7fff00] text-lg [text-shadow:0_0_8px_rgba(127,255,0,0.2)]">
-          {{ item.unitPrice * item.quantity | currency:'COP':'symbol-narrow':'1.0-0' }}
-        </p>
-      </div>
-
-      <!-- Eliminar -->
-      <button (click)="removeItem(item.productId)"
-        class="text-[#666] hover:text-[#ff6b35] p-2.5 transition-all duration-300 hover:bg-[rgba(255,107,53,0.1)] rounded-lg group">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:scale-110 transition-transform" fill="none"
-          viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-        </svg>
+      <button (click)="openCheckoutConfirm()" [disabled]="loading()"
+        class="w-full bg-gradient-to-r from-[#ff6b35] to-[#ff8c00] text-white px-6 py-5 rounded-2xl font-black text-lg uppercase tracking-[4px] transition-all duration-300 hover:enabled:shadow-[0_0_40px_rgba(255,107,53,0.5)] hover:enabled:-translate-y-1 hover:enabled:scale-[1.01] active:enabled:translate-y-0 active:enabled:scale-100 disabled:opacity-30 disabled:cursor-not-allowed relative z-10 font-['Permanent_Marker',cursive,sans-serif]"
+        style="text-shadow: 0 2px 4px rgba(0,0,0,0.3);">
+        @if (loading()) {
+        ⏳ Procesando...
+        } @else {
+        🔥 Realizar Pedido
+        }
       </button>
     </div>
     }
+
+    <!-- Confirm Dialog -->
+    <app-confirm-dialog [isOpen]="showConfirmDialog()" title="Confirmar Pedido"
+      message="¿Deseas confirmar tu pedido? Una vez realizado no podrás modificarlo." confirmText="Confirmar Pedido"
+      cancelText="Cancelar" (confirmed)="onConfirmCheckout($event)">
+    </app-confirm-dialog>
   </div>
-
-  <!-- Total y Checkout -->
-  <div
-    class="bg-[rgba(26,26,46,0.95)] border-2 border-[#7fff00] rounded-[20px] mt-5 p-6 shadow-[0_0_25px_rgba(127,255,0,0.1)] relative overflow-hidden">
-    <div
-      class="absolute w-[100px] h-[100px] bg-[#7fff00] rounded-full blur-[60px] opacity-10 -top-5 -right-5 pointer-events-none">
-    </div>
-    <div class="flex justify-between items-center mb-5 relative z-10">
-      <span class="text-lg font-bold text-white uppercase tracking-wider">Total del pedido:</span>
-      <span
-        class="text-3xl font-bold text-[#7fff00] [text-shadow:0_0_20px_rgba(127,255,0,0.4)] font-['Permanent_Marker',cursive,sans-serif]">
-        {{ total() | currency:'COP':'symbol-narrow':'1.0-0' }}
-      </span>
-    </div>
-
-    <button (click)="openCheckoutConfirm()" [disabled]="loading()"
-      class="w-full bg-gradient-to-r from-[#ff6b35] to-[#ff8c00] text-white px-4 py-4 rounded-[12px] font-bold text-lg uppercase tracking-[3px] transition-all duration-300 hover:enabled:shadow-[0_0_35px_rgba(255,107,53,0.5)] hover:enabled:-translate-y-0.5 active:enabled:translate-y-0 disabled:opacity-40 disabled:cursor-not-allowed relative z-10">
-      @if (loading()) {
-      ⏳ Procesando...
-      } @else {
-      🔥 Realizar Pedido
-      }
-    </button>
-  </div>
-  }
-
-  <!-- Confirm Dialog -->
-  <app-confirm-dialog [isOpen]="showConfirmDialog()" title="Confirmar Pedido"
-    message="¿Deseas confirmar tu pedido? Una vez realizado no podrás modificarlo." confirmText="Confirmar Pedido"
-    cancelText="Cancelar" (confirmed)="onConfirmCheckout($event)">
-  </app-confirm-dialog>
 </div>
