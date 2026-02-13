@@ -1,3 +1,250 @@
-<div class="manage-products">
-  <h3>Gestionar Productos</h3>
+<div class="max-w-7xl mx-auto py-8 px-4 relative">
+  <!-- Decorative -->
+  <div
+    class="absolute w-[200px] h-[200px] bg-[#7fff00] rounded-full blur-[100px] opacity-8 -top-10 right-40 pointer-events-none">
+  </div>
+
+  <div class="flex justify-between items-center mb-8">
+    <div class="flex items-center gap-4">
+      <img src="assets/images/Street_Bites_Logo.png" alt="StreetBites"
+        class="w-14 h-14 drop-shadow-[0_0_15px_rgba(127,255,0,0.5)]">
+      <div>
+        <div class="flex items-center gap-3">
+          <h1
+            class="font-['Permanent_Marker',cursive,sans-serif] text-4xl text-[#7fff00] [text-shadow:2px_2px_0_#ff6b35,4px_4px_0_rgba(0,0,0,0.3)]">
+            Productos
+          </h1>
+          <span
+            class="bg-[rgba(255,107,53,0.2)] border border-[#ff6b35] text-[#ff6b35] text-[9px] font-bold uppercase tracking-[2px] px-2 py-0.5 rounded-full">
+            ADMIN
+          </span>
+        </div>
+        <p class="text-[#a0a0a0] text-sm mt-1 tracking-wider">🍔 Gestiona el menú de tu restaurante</p>
+      </div>
+    </div>
+    <button (click)="openNewProduct()"
+      class="bg-gradient-to-r from-[#7fff00] to-[#32cd32] text-black px-6 py-3 rounded-[12px] font-bold uppercase tracking-wider transition-all duration-300 hover:shadow-[0_0_25px_rgba(127,255,0,0.4)] hover:-translate-y-0.5 active:translate-y-0 text-sm">
+      ✨ Nuevo Producto
+    </button>
+  </div>
+
+  <!-- Error State -->
+  @if (error()) {
+  <div class="bg-[rgba(255,107,53,0.15)] border-2 border-[#ff6b35] rounded-[15px] p-5 mb-6 flex items-center gap-3">
+    <span class="text-2xl">⚠️</span>
+    <div>
+      <p class="text-[#ff6b35] font-semibold">{{ error() }}</p>
+      <button (click)="loadProducts()" class="mt-1 text-sm text-[#7fff00] underline hover:text-white transition-colors">
+        Reintentar
+      </button>
+    </div>
+  </div>
+  }
+
+  <!-- Loading State -->
+  @if (loading()) {
+  <div class="flex flex-col items-center justify-center py-16">
+    <div class="w-12 h-12 border-4 border-[#333] border-t-[#7fff00] rounded-full animate-spin mb-4"></div>
+    <p class="text-[#7fff00] text-lg animate-pulse font-semibold">Cargando productos...</p>
+  </div>
+  }
+
+  <!-- Products Table -->
+  @if (!loading()) {
+  <div class="bg-[rgba(26,26,46,0.95)] border-2 border-[#333] rounded-[20px] overflow-hidden">
+    <table class="table-auto w-full">
+      <thead class="bg-[rgba(127,255,0,0.06)] border-b-2 border-[#333]">
+        <tr>
+          <th class="px-5 py-4 text-center text-xs font-bold text-[#7fff00] uppercase tracking-[2px] w-20">Imagen</th>
+          <th class="px-5 py-4 text-left text-xs font-bold text-[#7fff00] uppercase tracking-[2px]">Nombre</th>
+          <th class="px-5 py-4 text-right text-xs font-bold text-[#7fff00] uppercase tracking-[2px]">Precio</th>
+          <th class="px-5 py-4 text-center text-xs font-bold text-[#7fff00] uppercase tracking-[2px]">Stock</th>
+          <th class="px-5 py-4 text-center text-xs font-bold text-[#7fff00] uppercase tracking-[2px]">Estado</th>
+          <th class="px-5 py-4 text-center text-xs font-bold text-[#7fff00] uppercase tracking-[2px]">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (product of products(); track product.id) {
+        <tr class="border-t border-[#2a2a3e] hover:bg-[rgba(127,255,0,0.03)] transition-colors duration-300 group">
+          <td class="px-5 py-3 text-center">
+            @if (product.imageUrl) {
+            <img [src]="product.imageUrl" [alt]="product.name"
+              class="w-16 h-16 rounded-[12px] object-cover border-2 border-[#333] group-hover:border-[#7fff00] transition-all duration-300 shadow-lg mx-auto">
+            } @else {
+            <div
+              class="w-16 h-16 rounded-[12px] bg-gradient-to-br from-[rgba(127,255,0,0.05)] to-[rgba(255,107,53,0.05)] border-2 border-[#333] flex items-center justify-center text-2xl mx-auto">
+              🍔</div>
+            }
+          </td>
+          <td class="px-5 py-4">
+            <span class="text-sm text-white font-semibold group-hover:text-[#7fff00] transition-colors">{{
+              product.name }}</span>
+            @if (product.description) {
+            <p class="text-xs text-[#666] mt-0.5 line-clamp-1">{{ product.description }}</p>
+            }
+          </td>
+          <td class="px-5 py-4 text-right text-sm text-[#7fff00] font-bold">
+            {{ product.price | currency:'COP':'symbol-narrow':'1.0-0' }}
+          </td>
+          <td class="px-5 py-4 text-center">
+            <span
+              class="bg-[rgba(255,255,255,0.05)] border border-[#333] rounded-lg px-3 py-1 text-sm text-white font-bold">
+              {{ product.stock }}
+            </span>
+          </td>
+          <td class="px-5 py-4 text-center">
+            <span
+              class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider"
+              [class]="product.isActive ? 'bg-[rgba(127,255,0,0.12)] text-[#7fff00] border border-[rgba(127,255,0,0.4)]' : 'bg-[rgba(255,107,53,0.12)] text-[#ff6b35] border border-[rgba(255,107,53,0.4)]'">
+              <span class="w-2 h-2 rounded-full"
+                [class]="product.isActive ? 'bg-[#7fff00] shadow-[0_0_6px_rgba(127,255,0,0.6)]' : 'bg-[#ff6b35] shadow-[0_0_6px_rgba(255,107,53,0.6)]'"></span>
+              {{ product.isActive ? 'Activo' : 'Inactivo' }}
+            </span>
+          </td>
+          <td class="px-5 py-4 text-center">
+            <div class="flex justify-center gap-2">
+              <button (click)="openEditProduct(product)"
+                class="bg-[rgba(127,255,0,0.1)] border border-[rgba(127,255,0,0.4)] text-[#7fff00] px-3 py-1.5 rounded-lg hover:bg-[#7fff00] hover:text-black text-xs font-bold uppercase tracking-wider transition-all duration-300">
+                ✏️ Editar
+              </button>
+              <button (click)="openToggleDialog(product)"
+                [class]="product.isActive
+                ? 'bg-[rgba(255,107,53,0.1)] border border-[rgba(255,107,53,0.4)] text-[#ff6b35] px-3 py-1.5 rounded-lg hover:bg-[#ff6b35] hover:text-white text-xs font-bold uppercase tracking-wider transition-all duration-300'
+                : 'bg-[rgba(127,255,0,0.1)] border border-[rgba(127,255,0,0.4)] text-[#7fff00] px-3 py-1.5 rounded-lg hover:bg-[#7fff00] hover:text-black text-xs font-bold uppercase tracking-wider transition-all duration-300'">
+                {{ product.isActive ? 'Desactivar' : 'Activar' }}
+              </button>
+            </div>
+          </td>
+        </tr>
+        } @empty {
+        <tr>
+          <td colspan="6" class="px-5 py-12 text-center">
+            <p class="text-3xl mb-3">📦</p>
+            <p class="text-[#a0a0a0]">No hay productos registrados</p>
+            <p class="text-[#666] text-sm mt-1">¡Crea tu primer producto del menú!</p>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  }
+
+  <!-- Product Form Modal -->
+  @if (showFormModal()) {
+  <div class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 backdrop-blur-sm">
+    <div
+      class="bg-[rgba(26,26,46,0.98)] border-2 border-[#7fff00] rounded-[20px] shadow-[0_0_40px_rgba(127,255,0,0.2),0_25px_50px_rgba(0,0,0,0.5)] p-7 max-w-lg w-full mx-4 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="p-2 bg-[rgba(127,255,0,0.12)] rounded-[10px]">
+          <span class="text-2xl">{{ editingProduct() ? '✏️' : '✨' }}</span>
+        </div>
+        <h3
+          class="font-['Permanent_Marker',cursive,sans-serif] text-xl text-[#7fff00] [text-shadow:1px_1px_0_rgba(255,107,53,0.3)]">
+          {{ editingProduct() ? 'Editar Producto' : 'Nuevo Producto' }}
+        </h3>
+      </div>
+
+      <form [formGroup]="productForm" (ngSubmit)="onSubmitProduct()">
+        <!-- Nombre -->
+        <div class="mb-4">
+          <label class="block text-xs font-bold text-[#7fff00] mb-2 uppercase tracking-[2px]">Nombre *</label>
+          <input type="text" formControlName="name"
+            class="bg-[rgba(255,255,255,0.05)] border-2 border-[#333] rounded-[10px] px-4 py-3 w-full text-white focus:outline-none focus:border-[#7fff00] focus:shadow-[0_0_15px_rgba(127,255,0,0.2)] transition-all duration-300 placeholder:text-[#555]"
+            placeholder="Nombre del producto">
+          @if (productForm.get('name')?.invalid && productForm.get('name')?.touched) {
+          <p class="text-[#ff6b35] text-xs mt-1.5 flex items-center gap-1">⚠️ El nombre es requerido</p>
+          }
+        </div>
+
+        <!-- Descripción -->
+        <div class="mb-4">
+          <label class="block text-xs font-bold text-[#7fff00] mb-2 uppercase tracking-[2px]">Descripción</label>
+          <textarea formControlName="description"
+            class="bg-[rgba(255,255,255,0.05)] border-2 border-[#333] rounded-[10px] px-4 py-3 w-full text-white focus:outline-none focus:border-[#7fff00] focus:shadow-[0_0_15px_rgba(127,255,0,0.2)] transition-all duration-300 placeholder:text-[#555] resize-none"
+            rows="3" placeholder="Descripción del producto"></textarea>
+        </div>
+
+        <!-- Precio y Stock -->
+        <div class="grid grid-cols-2 gap-4 mb-4">
+          <div>
+            <label class="block text-xs font-bold text-[#7fff00] mb-2 uppercase tracking-[2px]">Precio *</label>
+            <input type="number" formControlName="price"
+              class="bg-[rgba(255,255,255,0.05)] border-2 border-[#333] rounded-[10px] px-4 py-3 w-full text-white focus:outline-none focus:border-[#7fff00] focus:shadow-[0_0_15px_rgba(127,255,0,0.2)] transition-all duration-300"
+              min="0" step="100">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-[#7fff00] mb-2 uppercase tracking-[2px]">Stock *</label>
+            <input type="number" formControlName="stock"
+              class="bg-[rgba(255,255,255,0.05)] border-2 border-[#333] rounded-[10px] px-4 py-3 w-full text-white focus:outline-none focus:border-[#7fff00] focus:shadow-[0_0_15px_rgba(127,255,0,0.2)] transition-all duration-300"
+              min="0">
+          </div>
+        </div>
+
+        <!-- URL Imagen -->
+        <div class="mb-4">
+          <label class="block text-xs font-bold text-[#7fff00] mb-2 uppercase tracking-[2px]">URL de Imagen</label>
+          <input type="text" formControlName="imageUrl"
+            class="bg-[rgba(255,255,255,0.05)] border-2 border-[#333] rounded-[10px] px-4 py-3 w-full text-white focus:outline-none focus:border-[#7fff00] focus:shadow-[0_0_15px_rgba(127,255,0,0.2)] transition-all duration-300 placeholder:text-[#555]"
+            placeholder="https://...">
+
+          <!-- Vista previa de imagen -->
+          @if (productForm.get('imageUrl')?.value) {
+          <div class="mt-3 relative">
+            <p class="text-[10px] text-[#888] uppercase tracking-[2px] mb-2 font-bold">📸 Vista previa</p>
+            <div
+              class="bg-[rgba(255,255,255,0.02)] border-2 border-dashed border-[#333] rounded-[12px] p-3 flex items-center justify-center">
+              <img [src]="productForm.get('imageUrl')?.value" [alt]="productForm.get('name')?.value || 'Preview'"
+                class="max-h-40 max-w-full rounded-[10px] object-contain border border-[#333] shadow-[0_0_20px_rgba(127,255,0,0.1)]"
+                (error)="$any($event.target).style.display='none'; $any($event.target).nextElementSibling.style.display='flex'"
+                (load)="$any($event.target).style.display='block'; $any($event.target).nextElementSibling.style.display='none'">
+              <div class="hidden flex-col items-center gap-2 py-4 text-center">
+                <span class="text-3xl">❌</span>
+                <p class="text-[#ff6b35] text-xs font-semibold">No se pudo cargar la imagen</p>
+                <p class="text-[#666] text-[10px]">Verifica que la URL sea válida</p>
+              </div>
+            </div>
+          </div>
+          }
+        </div>
+
+        <!-- Activo -->
+        <div class="mb-6">
+          <label
+            class="flex items-center cursor-pointer gap-2.5 bg-[rgba(255,255,255,0.02)] rounded-[10px] p-3 border border-[#2a2a3e] hover:border-[#333] transition-colors">
+            <input type="checkbox" formControlName="isActive"
+              class="rounded border-[#333] text-[#7fff00] bg-[rgba(255,255,255,0.05)] focus:ring-[#7fff00] w-5 h-5">
+            <span class="text-sm text-[#a0a0a0]">Producto activo (visible para clientes)</span>
+          </label>
+        </div>
+
+        <!-- Botones -->
+        <div class="flex justify-end space-x-3">
+          <button type="button" (click)="closeFormModal()"
+            class="bg-[rgba(255,255,255,0.05)] border border-[#333] text-gray-300 px-5 py-2.5 rounded-[10px] hover:bg-[rgba(255,255,255,0.1)] transition-all duration-300 text-sm">
+            Cancelar
+          </button>
+          <button type="submit" [disabled]="productForm.invalid || formLoading()"
+            class="bg-gradient-to-r from-[#7fff00] to-[#32cd32] text-black px-6 py-2.5 rounded-[10px] font-bold uppercase tracking-wider text-sm transition-all duration-300 hover:enabled:shadow-[0_0_25px_rgba(127,255,0,0.4)] disabled:opacity-40 disabled:cursor-not-allowed">
+            @if (formLoading()) {
+            ⏳ Guardando...
+            } @else {
+            {{ editingProduct() ? '💾 Actualizar' : '✨ Crear' }}
+            }
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  }
+
+  <!-- Confirm Toggle Dialog -->
+  <app-confirm-dialog [isOpen]="showDeleteDialog()"
+    [title]="productToToggle()?.isActive ? 'Desactivar Producto' : 'Activar Producto'" [message]="productToToggle()?.isActive
+      ? '¿Estás seguro de desactivar este producto? Los usuarios no podrán verlo.'
+      : '¿Estás seguro de activar este producto? Estará visible para los usuarios.'"
+    [confirmText]="productToToggle()?.isActive ? 'Desactivar' : 'Activar'" cancelText="Cancelar" [confirmButtonClass]="productToToggle()?.isActive
+      ? 'bg-[#ff6b35] text-white hover:bg-red-600'
+      : 'bg-[#7fff00] text-black hover:bg-green-500'" (confirmed)="onConfirmToggle($event)">
+  </app-confirm-dialog>
 </div>

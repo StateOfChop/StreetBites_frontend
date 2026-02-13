@@ -1,9 +1,127 @@
-<div class="register">
-  <h2>Register</h2>
-  <form>
-    <input placeholder="Nombre" />
-    <input placeholder="Email" />
-    <input placeholder="Password" type="password" />
-    <button type="submit">Registrar</button>
-  </form>
+<div
+  class="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0a0a1a] via-[#111128] to-[#0a0a1a] relative overflow-hidden p-5">
+
+  <!-- ═══════ GRAFFITI BACKGROUND ═══════ -->
+  <div class="absolute inset-0 pointer-events-none overflow-hidden">
+    <!-- Spray paint splatters -->
+    <div
+      class="absolute w-[350px] h-[350px] bg-[#ff6b35] rounded-full blur-[120px] opacity-[0.08] -top-[120px] -right-[120px]">
+    </div>
+    <div
+      class="absolute w-[250px] h-[250px] bg-[#7fff00] rounded-full blur-[100px] opacity-[0.06] -bottom-[80px] -left-[80px]">
+    </div>
+    <div
+      class="absolute w-[180px] h-[180px] bg-[#ff00ff] rounded-full blur-[80px] opacity-[0.03] bottom-1/3 left-[15%]">
+    </div>
+    <div class="absolute w-[200px] h-[200px] bg-[#ff6b35] rounded-full blur-[90px] opacity-[0.04] top-1/4 right-[10%]">
+    </div>
+
+    <!-- Paint drip lines -->
+    <div
+      class="absolute top-0 right-[15%] w-[2px] h-[180px] bg-gradient-to-b from-[#ff6b35] to-transparent opacity-20 rotate-[-8deg]">
+    </div>
+    <div
+      class="absolute top-0 right-[35%] w-[3px] h-[120px] bg-gradient-to-b from-[#7fff00] to-transparent opacity-15 rotate-[5deg]">
+    </div>
+    <div
+      class="absolute top-0 left-[20%] w-[2px] h-[200px] bg-gradient-to-b from-[#ff6b35] to-transparent opacity-10 rotate-[-12deg]">
+    </div>
+    <div
+      class="absolute top-0 left-[40%] w-[1px] h-[90px] bg-gradient-to-b from-[#7fff00] to-transparent opacity-20 rotate-[3deg]">
+    </div>
+
+    <!-- Street corner decorations -->
+    <div class="absolute top-20 left-20 w-[50px] h-[50px] border-2 border-[rgba(255,107,53,0.08)] rotate-45"></div>
+    <div class="absolute bottom-32 right-10 w-[35px] h-[35px] border-2 border-[rgba(127,255,0,0.08)] rotate-[-12deg]">
+    </div>
+    <div class="absolute bottom-1/2 left-8 w-[25px] h-[25px] border-2 border-[rgba(255,107,53,0.06)] rotate-[60deg]">
+    </div>
+
+    <!-- Diagonal line pattern (subtle) -->
+    <div class="absolute inset-0 opacity-[0.02]"
+      style="background-image: repeating-linear-gradient(-45deg, transparent, transparent 80px, rgba(255,107,53,0.1) 80px, rgba(255,107,53,0.1) 81px);">
+    </div>
+  </div>
+
+  <!-- ═══════ REGISTER CARD ═══════ -->
+  <div
+    class="bg-[rgba(16,16,30,0.95)] border-2 border-[#ff6b35] rounded-[25px] p-10 w-full max-w-[440px] shadow-[0_0_50px_rgba(255,107,53,0.15),0_25px_60px_rgba(0,0,0,0.6)] relative z-10 backdrop-blur-md max-[480px]:p-[30px_20px]">
+
+    <!-- Accent line on top -->
+    <div
+      class="absolute top-0 left-6 right-6 h-[3px] bg-gradient-to-r from-transparent via-[#ff6b35] to-transparent opacity-60 rounded-full">
+    </div>
+
+    <!-- Logo -->
+    <div class="flex justify-center items-center mb-6">
+      <img src="assets/images/Street_Bites_Logo.png" alt="Street Bites"
+        class="w-[130px] h-auto block mx-auto drop-shadow-[0_0_30px_rgba(255,107,53,0.5)] hover:scale-105 transition-transform duration-500" />
+    </div>
+
+    <!-- Title -->
+    <h1
+      class="font-['Permanent_Marker',cursive,sans-serif] text-5xl text-[#ff6b35] text-center m-0 [text-shadow:3px_3px_0_#7fff00,6px_6px_0_rgba(0,0,0,0.4)] max-[480px]:text-4xl">
+      Únete
+    </h1>
+    <div class="flex items-center justify-center gap-3 mt-3 mb-8">
+      <div class="h-[2px] w-10 bg-gradient-to-r from-transparent to-[#ff6b35] rounded-full"></div>
+      <p class="text-[#666] text-xs tracking-[3px] uppercase font-bold">Crea tu cuenta</p>
+      <div class="h-[2px] w-10 bg-gradient-to-l from-transparent to-[#ff6b35] rounded-full"></div>
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-5">
+      <!-- Name -->
+      <div class="flex flex-col gap-2">
+        <label for="name" class="text-[10px] text-[#ff6b35] font-black uppercase tracking-[3px]">👤 Nombre</label>
+        <input id="name" type="text" formControlName="name" placeholder="Tu nombre"
+          class="bg-[rgba(255,255,255,0.03)] border-2 border-[#2a2a3e] rounded-xl p-4 text-white text-base transition-all duration-300 placeholder:text-[#444] focus:outline-none focus:border-[#ff6b35] focus:shadow-[0_0_20px_rgba(255,107,53,0.15),inset_0_0_10px_rgba(255,107,53,0.03)]" />
+      </div>
+
+      <!-- Email -->
+      <div class="flex flex-col gap-2">
+        <label for="email" class="text-[10px] text-[#ff6b35] font-black uppercase tracking-[3px]">📧 Correo</label>
+        <input id="email" type="email" formControlName="email" placeholder="tu@correo.com"
+          class="bg-[rgba(255,255,255,0.03)] border-2 border-[#2a2a3e] rounded-xl p-4 text-white text-base transition-all duration-300 placeholder:text-[#444] focus:outline-none focus:border-[#ff6b35] focus:shadow-[0_0_20px_rgba(255,107,53,0.15),inset_0_0_10px_rgba(255,107,53,0.03)]" />
+      </div>
+
+      <!-- Password -->
+      <div class="flex flex-col gap-2">
+        <label for="password" class="text-[10px] text-[#ff6b35] font-black uppercase tracking-[3px]">🔒
+          Contraseña</label>
+        <input id="password" type="password" formControlName="password" placeholder="Mínimo 6 caracteres"
+          class="bg-[rgba(255,255,255,0.03)] border-2 border-[#2a2a3e] rounded-xl p-4 text-white text-base transition-all duration-300 placeholder:text-[#444] focus:outline-none focus:border-[#ff6b35] focus:shadow-[0_0_20px_rgba(255,107,53,0.15),inset_0_0_10px_rgba(255,107,53,0.03)]" />
+      </div>
+
+      <!-- Error -->
+      <div *ngIf="errorMessage"
+        class="bg-[rgba(255,107,53,0.1)] border-2 border-[#ff6b35] rounded-xl p-3.5 flex items-center gap-3">
+        <span class="text-lg">💀</span>
+        <p class="text-[#ff6b35] text-sm font-bold">{{ errorMessage }}</p>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" [disabled]="registerForm.invalid || isLoading"
+        class="bg-gradient-to-r from-[#ff6b35] to-[#ff8c00] border-none rounded-xl py-4 px-8 text-white text-lg font-black cursor-pointer transition-all duration-300 uppercase tracking-[3px] mt-1 hover:enabled:-translate-y-1 hover:enabled:shadow-[0_8px_35px_rgba(255,107,53,0.4)] hover:enabled:scale-[1.02] active:enabled:translate-y-0 active:enabled:scale-100 disabled:opacity-30 disabled:cursor-not-allowed disabled:from-gray-700 disabled:to-gray-600 font-['Permanent_Marker',cursive,sans-serif]"
+        style="text-shadow: 0 1px 2px rgba(0,0,0,0.3);">
+        <span *ngIf="isLoading">⏳ Cargando...</span>
+        <span *ngIf="!isLoading">🔥 Registrarme</span>
+      </button>
+    </form>
+
+    <!-- Login link -->
+    <div class="text-center mt-7">
+      <p class="text-[#555] text-sm">
+        ¿Ya tienes cuenta?
+      </p>
+      <a routerLink="/auth/login"
+        class="inline-block mt-2 text-[#7fff00] no-underline font-black text-sm uppercase tracking-[2px] transition-all duration-300 hover:text-[#ff6b35] border-b-2 border-transparent hover:border-[#ff6b35] pb-0.5">
+        🍔 Inicia sesión
+      </a>
+    </div>
+
+    <!-- Bottom accent -->
+    <div
+      class="absolute bottom-0 left-6 right-6 h-[3px] bg-gradient-to-r from-transparent via-[#7fff00] to-transparent opacity-30 rounded-full">
+    </div>
+  </div>
 </div>

@@ -1,3 +1,177 @@
-<div class="order-detail">
-  <h3>Detalle Pedido</h3>
+<div class="min-h-screen relative overflow-hidden">
+  <!-- ═══════ GRAFFITI BACKGROUND ═══════ -->
+  <div class="absolute inset-0 pointer-events-none overflow-hidden">
+    <div class="absolute w-[200px] h-[200px] bg-[#ff6b35] rounded-full blur-[100px] opacity-[0.06] -top-10 right-10">
+    </div>
+    <div class="absolute w-[150px] h-[150px] bg-[#7fff00] rounded-full blur-[80px] opacity-[0.05] bottom-20 -left-10">
+    </div>
+    <div
+      class="absolute top-0 left-[40%] w-[2px] h-[80px] bg-gradient-to-b from-[#ff6b35] to-transparent opacity-15 rotate-[12deg]">
+    </div>
+  </div>
+
+  <div class="max-w-4xl mx-auto py-8 px-4 relative z-10">
+    <!-- Back button -->
+    <a routerLink="/orders"
+      class="inline-flex items-center gap-2 text-[#7fff00] hover:text-[#ff6b35] mb-8 transition-all duration-300 font-black text-xs uppercase tracking-[3px] group bg-[rgba(127,255,0,0.04)] px-4 py-2 rounded-xl border border-[rgba(127,255,0,0.1)] hover:border-[#ff6b35] hover:bg-[rgba(255,107,53,0.05)]">
+      <span class="group-hover:-translate-x-1 transition-transform text-base">←</span> Volver a pedidos
+    </a>
+
+    <!-- ═══════ HEADER ═══════ -->
+    <div class="mb-10">
+      <div class="flex items-center gap-5 mb-3">
+        <img src="assets/images/Street_Bites_Logo.png" alt="StreetBites"
+          class="w-20 h-20 drop-shadow-[0_0_25px_rgba(255,107,53,0.5)] hover:scale-110 transition-transform duration-500">
+        <div>
+          <h1
+            class="font-['Permanent_Marker',cursive,sans-serif] text-5xl md:text-6xl text-[#ff6b35] [text-shadow:3px_3px_0_#7fff00,6px_6px_0_rgba(0,0,0,0.4)] leading-tight">
+            Detalle
+          </h1>
+          <div class="flex items-center gap-3 mt-2">
+            <div class="h-[3px] w-12 bg-gradient-to-r from-[#ff6b35] to-transparent rounded-full"></div>
+            <p class="text-[#a0a0a0] text-sm tracking-[3px] uppercase font-semibold">
+              Info de tu orden 📦
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="h-[4px] bg-gradient-to-r from-[#ff6b35] via-[#7fff00] to-transparent rounded-full mt-2 max-w-sm">
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    @if (loading()) {
+    <div class="flex flex-col items-center justify-center py-20">
+      <div class="relative w-20 h-20 mb-6">
+        <div class="absolute inset-0 border-4 border-[#333] border-t-[#ff6b35] rounded-full animate-spin"></div>
+        <div class="absolute inset-2 border-4 border-[#222] border-b-[#7fff00] rounded-full animate-spin"
+          style="animation-direction: reverse; animation-duration: 1.5s;"></div>
+      </div>
+      <p class="text-[#ff6b35] text-xl animate-pulse font-['Permanent_Marker',cursive,sans-serif] tracking-wider">
+        Cargando pedido...</p>
+    </div>
+    }
+
+    <!-- Error State -->
+    @if (error()) {
+    <div
+      class="bg-[rgba(255,107,53,0.1)] border-2 border-[#ff6b35] rounded-[20px] p-6 mb-8 flex items-center gap-4 backdrop-blur-sm">
+      <div class="text-4xl animate-bounce">💀</div>
+      <div>
+        <p class="text-[#ff6b35] font-bold font-['Permanent_Marker',cursive,sans-serif] text-lg">¡Error!</p>
+        <p class="text-[#a0a0a0] text-sm">{{ error() }}</p>
+      </div>
+    </div>
+    }
+
+    <!-- Order Details -->
+    @if (order()) {
+
+    <!-- ═══════ ORDER INFO CARDS ═══════ -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <!-- ID -->
+      <div
+        class="bg-[rgba(26,26,46,0.95)] border-2 border-[#2a2a3e] rounded-[16px] p-5 hover:border-[#7fff00] transition-all duration-300 group backdrop-blur-sm relative overflow-hidden">
+        <div
+          class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-[#7fff00] to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+        </div>
+        <p class="text-[10px] text-[#555] uppercase tracking-[3px] mb-2 font-black">ID Pedido</p>
+        <p class="font-bold text-[#7fff00] font-mono text-lg">#{{ order()!.id | slice:0:8 }}</p>
+      </div>
+      <!-- Date -->
+      <div
+        class="bg-[rgba(26,26,46,0.95)] border-2 border-[#2a2a3e] rounded-[16px] p-5 hover:border-[#ff6b35] transition-all duration-300 group backdrop-blur-sm relative overflow-hidden">
+        <div
+          class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-[#ff6b35] to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+        </div>
+        <p class="text-[10px] text-[#555] uppercase tracking-[3px] mb-2 font-black">Fecha</p>
+        <p class="font-bold text-white">{{ order()!.createdAt | date:'dd/MM/yyyy' }}</p>
+        <p class="text-[#777] text-xs mt-0.5">{{ order()!.createdAt | date:'HH:mm' }} hrs</p>
+      </div>
+      <!-- Status -->
+      <div
+        class="bg-[rgba(26,26,46,0.95)] border-2 border-[#2a2a3e] rounded-[16px] p-5 hover:border-[#7fff00] transition-all duration-300 group backdrop-blur-sm relative overflow-hidden">
+        <div
+          class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-[#7fff00] to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+        </div>
+        <p class="text-[10px] text-[#555] uppercase tracking-[3px] mb-2 font-black">Estado</p>
+        <span class="inline-block px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[2px] mt-1"
+          [class]="getStatusClass(order()!.status)">
+          {{ getStatusLabel(order()!.status) }}
+        </span>
+      </div>
+      <!-- Total -->
+      <div
+        class="bg-[rgba(26,26,46,0.95)] border-2 border-[#7fff00] rounded-[16px] p-5 shadow-[0_0_20px_rgba(127,255,0,0.08)] relative overflow-hidden backdrop-blur-sm">
+        <div
+          class="absolute w-[60px] h-[60px] bg-[#7fff00] rounded-full blur-[40px] opacity-[0.08] -top-3 -right-3 pointer-events-none">
+        </div>
+        <p class="text-[10px] text-[#555] uppercase tracking-[3px] mb-2 font-black relative z-10">Total</p>
+        <p
+          class="font-bold text-3xl text-[#7fff00] [text-shadow:0_0_15px_rgba(127,255,0,0.3)] font-['Permanent_Marker',cursive,sans-serif] relative z-10">
+          {{ order()!.total | currency:'COP':'symbol-narrow':'1.0-0' }}
+        </p>
+      </div>
+    </div>
+
+    <!-- ═══════ ORDER ITEMS ═══════ -->
+    <div
+      class="bg-[rgba(26,26,46,0.95)] border-2 border-[#2a2a3e] rounded-[20px] overflow-hidden mb-6 backdrop-blur-sm">
+      <!-- Section header -->
+      <div class="flex items-center gap-3 p-5 border-b-2 border-[#2a2a3e] bg-[rgba(127,255,0,0.03)]">
+        <span class="text-xl">🍕</span>
+        <h3
+          class="text-sm font-black text-[#7fff00] uppercase tracking-[3px] font-['Permanent_Marker',cursive,sans-serif]">
+          Productos ordenados</h3>
+      </div>
+
+      <!-- Items -->
+      @for (item of order()!.items; track item.productId) {
+      <div
+        class="flex items-center p-5 border-t border-[#1e1e35] first:border-t-0 hover:bg-[rgba(127,255,0,0.02)] transition-colors group">
+        <div class="flex-1">
+          <h4 class="font-bold text-white group-hover:text-[#7fff00] transition-colors">{{ item.product?.name ||
+            item.productName || item.productId }}</h4>
+          <p class="text-[#555] text-xs mt-1 uppercase tracking-wider">{{ item.price |
+            currency:'COP':'symbol-narrow':'1.0-0' }} c/u</p>
+        </div>
+        <span
+          class="bg-[rgba(127,255,0,0.06)] border border-[rgba(127,255,0,0.15)] rounded-xl px-4 py-1.5 text-white text-sm font-black mx-4">
+          x{{ item.quantity }}
+        </span>
+        <p
+          class="w-32 text-right font-bold text-[#7fff00] text-lg font-['Permanent_Marker',cursive,sans-serif] [text-shadow:0_0_8px_rgba(127,255,0,0.2)]">
+          {{ (item.price * item.quantity) | currency:'COP':'symbol-narrow':'1.0-0' }}
+        </p>
+      </div>
+      }
+
+      <!-- Total row -->
+      <div class="flex items-center justify-between p-5 bg-[rgba(127,255,0,0.04)] border-t-2 border-[#2a2a3e]">
+        <span class="font-black text-white uppercase tracking-[3px] text-sm">Total:</span>
+        <span
+          class="font-bold text-[#7fff00] text-2xl font-['Permanent_Marker',cursive,sans-serif] [text-shadow:0_0_15px_rgba(127,255,0,0.3)]">
+          {{ order()!.total | currency:'COP':'symbol-narrow':'1.0-0' }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Cancel Button (only for PENDING) -->
+    @if (order()!.status === OrderStatus.PENDING) {
+    <div class="flex justify-end">
+      <button (click)="openCancelDialog()"
+        class="bg-[rgba(255,107,53,0.1)] border-2 border-[#ff6b35] text-[#ff6b35] px-8 py-3.5 rounded-xl font-black uppercase tracking-[3px] text-sm transition-all duration-300 hover:bg-[#ff6b35] hover:text-white hover:shadow-[0_0_30px_rgba(255,107,53,0.4)] hover:-translate-y-1 active:translate-y-0">
+        ❌ Cancelar Pedido
+      </button>
+    </div>
+    }
+    }
+
+    <!-- Confirm Cancel Dialog -->
+    <app-confirm-dialog [isOpen]="showCancelDialog()" title="Cancelar Pedido"
+      message="¿Estás seguro de cancelar este pedido? Esta acción no se puede deshacer." confirmText="Sí, cancelar"
+      cancelText="No, mantener" confirmButtonClass="bg-[#ff6b35] text-white hover:bg-red-600"
+      (confirmed)="onConfirmCancel($event)">
+    </app-confirm-dialog>
+  </div>
 </div>

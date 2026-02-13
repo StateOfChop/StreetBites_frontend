@@ -6,8 +6,7 @@ import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dial
 import { CurrencyFormatPipe } from './pipes/currency-format.pipe';
 
 @NgModule({
-  declarations: [NavbarComponent, SpinnerComponent, ConfirmDialogComponent, CurrencyFormatPipe],
-  imports: [CommonModule],
+  imports: [CommonModule, NavbarComponent, SpinnerComponent, ConfirmDialogComponent, CurrencyFormatPipe],
   exports: [NavbarComponent, SpinnerComponent, ConfirmDialogComponent, CurrencyFormatPipe]
 })
 export class SharedModule {}

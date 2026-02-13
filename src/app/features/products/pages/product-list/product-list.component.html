@@ -1,4 +1,188 @@
-<div class="product-list">
-  <h3>Productos</h3>
-  <ul></ul>
+<div class="min-h-screen relative overflow-hidden">
+  <!-- ═══════ GRAFFITI BACKGROUND ELEMENTS ═══════ -->
+  <div class="absolute inset-0 pointer-events-none overflow-hidden">
+    <!-- Spray paint splatters -->
+    <div
+      class="absolute w-[300px] h-[300px] bg-[#7fff00] rounded-full blur-[120px] opacity-[0.08] -top-20 -right-20 animate-pulse">
+    </div>
+    <div class="absolute w-[250px] h-[250px] bg-[#ff6b35] rounded-full blur-[100px] opacity-[0.06] bottom-40 -left-20">
+    </div>
+    <div class="absolute w-[200px] h-[200px] bg-[#ff00ff] rounded-full blur-[80px] opacity-[0.04] top-1/2 right-1/4">
+    </div>
+    <!-- Diagonal paint drip lines -->
+    <div
+      class="absolute top-0 left-[10%] w-[2px] h-[120px] bg-gradient-to-b from-[#7fff00] to-transparent opacity-20 rotate-[15deg]">
+    </div>
+    <div
+      class="absolute top-0 left-[30%] w-[3px] h-[80px] bg-gradient-to-b from-[#ff6b35] to-transparent opacity-15 rotate-[-8deg]">
+    </div>
+    <div
+      class="absolute top-0 right-[20%] w-[2px] h-[150px] bg-gradient-to-b from-[#7fff00] to-transparent opacity-10 rotate-[5deg]">
+    </div>
+    <!-- Street corner decorations -->
+    <div class="absolute bottom-10 right-10 w-[60px] h-[60px] border-2 border-[rgba(127,255,0,0.1)] rotate-45"></div>
+    <div class="absolute top-40 left-5 w-[40px] h-[40px] border-2 border-[rgba(255,107,53,0.1)] rotate-12"></div>
+  </div>
+
+  <div class="max-w-7xl mx-auto py-8 px-4 relative z-10">
+    <!-- ═══════ HEADER - STREET STYLE ═══════ -->
+    <div class="mb-10">
+      <div class="flex items-center gap-5 mb-3">
+        <img src="assets/images/Street_Bites_Logo.png" alt="StreetBites"
+          class="w-20 h-20 drop-shadow-[0_0_25px_rgba(127,255,0,0.6)] hover:scale-110 transition-transform duration-500">
+        <div>
+          <!-- Graffiti-style title with stacked shadow -->
+          <h1
+            class="font-['Permanent_Marker',cursive,sans-serif] text-5xl md:text-6xl text-[#7fff00] [text-shadow:3px_3px_0_#ff6b35,6px_6px_0_rgba(0,0,0,0.4)] leading-tight tracking-wide">
+            Nuestro Menú
+          </h1>
+          <div class="flex items-center gap-3 mt-2">
+            <div class="h-[3px] w-16 bg-gradient-to-r from-[#7fff00] to-transparent rounded-full"></div>
+            <p class="text-[#a0a0a0] text-sm tracking-[3px] uppercase font-semibold">
+              Lo mejor de la calle 🔥
+            </p>
+            <div class="h-[3px] w-16 bg-gradient-to-l from-[#ff6b35] to-transparent rounded-full"></div>
+          </div>
+        </div>
+      </div>
+      <!-- Graffiti underline effect -->
+      <div class="h-[4px] bg-gradient-to-r from-[#7fff00] via-[#ff6b35] to-transparent rounded-full mt-2 max-w-md">
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    @if (loading()) {
+    <div class="flex flex-col items-center justify-center py-20">
+      <div class="relative w-20 h-20 mb-6">
+        <div class="absolute inset-0 border-4 border-[#333] border-t-[#7fff00] rounded-full animate-spin"></div>
+        <div class="absolute inset-2 border-4 border-[#222] border-b-[#ff6b35] rounded-full animate-spin"
+          style="animation-direction: reverse; animation-duration: 1.5s;"></div>
+      </div>
+      <p class="text-[#7fff00] text-xl animate-pulse font-['Permanent_Marker',cursive,sans-serif] tracking-wider">
+        Preparando el menú...</p>
+    </div>
+    }
+
+    <!-- Error State -->
+    @if (error()) {
+    <div
+      class="bg-[rgba(255,107,53,0.1)] border-2 border-[#ff6b35] rounded-[20px] p-6 mb-8 flex items-center gap-4 backdrop-blur-sm">
+      <div class="text-4xl animate-bounce">💀</div>
+      <div>
+        <p class="text-[#ff6b35] font-bold text-lg font-['Permanent_Marker',cursive,sans-serif]">¡Algo salió mal!</p>
+        <p class="text-[#a0a0a0] text-sm mt-1">{{ error() }}</p>
+        <button (click)="loadProducts()"
+          class="mt-2 text-sm text-[#7fff00] font-bold uppercase tracking-wider hover:text-white transition-colors underline underline-offset-4 decoration-[#7fff00]">
+          ⟳ Reintentar
+        </button>
+      </div>
+    </div>
+    }
+
+    <!-- Product Grid -->
+    @if (!loading() && !error()) {
+    @if (products().length === 0) {
+    <div
+      class="bg-[rgba(26,26,46,0.95)] border-2 border-dashed border-[#333] rounded-[25px] p-16 text-center backdrop-blur-sm">
+      <p class="text-7xl mb-6 animate-pulse">🍽️</p>
+      <p class="text-white text-2xl font-['Permanent_Marker',cursive,sans-serif] mb-2">¡Aún no hay nada!</p>
+      <p class="text-[#666] text-sm">Vuelve pronto, estamos cocinando algo nuevo 🔥</p>
+    </div>
+    } @else {
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+      @for (product of products(); track product.id) {
+      <div
+        class="relative bg-[rgba(26,26,46,0.95)] border-2 border-[#2a2a3e] rounded-[20px] overflow-hidden transition-all duration-500 hover:border-[#7fff00] hover:shadow-[0_0_40px_rgba(127,255,0,0.15),0_15px_50px_rgba(0,0,0,0.4)] hover:-translate-y-2 group backdrop-blur-sm">
+
+        <!-- Decorative corner tape / sticker effect -->
+        <div
+          class="absolute top-3 left-3 z-20 bg-[#ff6b35] text-black text-[10px] font-black uppercase tracking-[2px] px-3 py-1 rotate-[-3deg] shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          style="clip-path: polygon(0 0, 100% 5%, 98% 100%, 2% 95%);">
+          🔥 FRESH
+        </div>
+
+        <!-- Imagen del producto -->
+        @if (product.imageUrl) {
+        <div class="relative overflow-hidden">
+          <img [src]="product.imageUrl" [alt]="product.name"
+            class="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-700 ease-out">
+          <!-- Dark gradient overlay -->
+          <div class="absolute inset-0 bg-gradient-to-t from-[rgb(26,26,46)] via-transparent to-transparent"></div>
+          <!-- Graffiti spray gradient overlay on hover -->
+          <div
+            class="absolute inset-0 bg-gradient-to-br from-[rgba(127,255,0,0.1)] to-[rgba(255,107,53,0.05)] opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+          </div>
+          <!-- Price tag - sticker style -->
+          <div
+            class="absolute bottom-3 right-3 bg-black/80 border-2 border-[#7fff00] rounded-xl px-4 py-1.5 shadow-[0_0_15px_rgba(127,255,0,0.3)] rotate-[-2deg] group-hover:rotate-0 transition-transform duration-300">
+            <span
+              class="text-[#7fff00] font-['Permanent_Marker',cursive,sans-serif] text-xl [text-shadow:0_0_10px_rgba(127,255,0,0.4)]">{{
+              product.price | currency:'COP':'symbol-narrow':'1.0-0' }}</span>
+          </div>
+        </div>
+        } @else {
+        <div
+          class="relative w-full h-56 bg-gradient-to-br from-[rgba(127,255,0,0.03)] via-[rgba(26,26,46,1)] to-[rgba(255,107,53,0.03)] flex items-center justify-center border-b-2 border-[#2a2a3e] overflow-hidden">
+          <!-- Graffiti pattern background -->
+          <div class="absolute inset-0 opacity-5"
+            style="background-image: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(127,255,0,0.1) 35px, rgba(127,255,0,0.1) 36px);">
+          </div>
+          <span
+            class="text-7xl opacity-30 group-hover:opacity-60 group-hover:scale-110 transition-all duration-500">🍔</span>
+          <!-- Price tag -->
+          <div
+            class="absolute bottom-3 right-3 bg-black/80 border-2 border-[#7fff00] rounded-xl px-4 py-1.5 shadow-[0_0_15px_rgba(127,255,0,0.3)]">
+            <span class="text-[#7fff00] font-['Permanent_Marker',cursive,sans-serif] text-xl">{{ product.price |
+              currency:'COP':'symbol-narrow':'1.0-0' }}</span>
+          </div>
+        </div>
+        }
+
+        <!-- Content area -->
+        <div class="p-5 relative">
+          <!-- Spray paint accent line -->
+          <div
+            class="absolute top-0 left-5 right-5 h-[2px] bg-gradient-to-r from-transparent via-[rgba(127,255,0,0.3)] to-transparent">
+          </div>
+
+          <h3
+            class="text-xl font-bold text-white mb-1 group-hover:text-[#7fff00] transition-colors duration-300 font-['Permanent_Marker',cursive,sans-serif] tracking-wide">
+            {{ product.name }}
+          </h3>
+          <p class="text-[#777] text-sm mb-4 line-clamp-2 leading-relaxed">{{ product.description }}</p>
+
+          <!-- Stock badge - graffiti sticker style -->
+          <div class="mb-4">
+            @if (product.stock > 0) {
+            <span
+              class="inline-flex items-center gap-1.5 bg-[rgba(127,255,0,0.08)] border border-[rgba(127,255,0,0.25)] text-[#7fff00] text-xs font-black px-3 py-1.5 rounded-full uppercase tracking-[1px]">
+              📦 {{ product.stock }} en stock
+            </span>
+            } @else {
+            <span
+              class="inline-flex items-center gap-1.5 bg-[rgba(255,107,53,0.08)] border border-[rgba(255,107,53,0.25)] text-[#ff6b35] text-xs font-black px-3 py-1.5 rounded-full uppercase tracking-[1px] line-through decoration-2">
+              ❌ Agotado
+            </span>
+            }
+          </div>
+
+          <!-- Quantity + Add to cart - urban style -->
+          <div class="flex items-center gap-3">
+            <input type="number" [(ngModel)]="quantities[product.id]" min="1" [max]="product.stock"
+              class="bg-[rgba(255,255,255,0.03)] border-2 border-[#333] rounded-xl px-3 py-3 w-20 text-center text-white text-lg font-bold focus:outline-none focus:border-[#7fff00] focus:shadow-[0_0_15px_rgba(127,255,0,0.2),inset_0_0_10px_rgba(127,255,0,0.05)] transition-all duration-300 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+              [disabled]="product.stock === 0">
+
+            <button (click)="addToCart(product)" [disabled]="product.stock === 0 || !isValidQuantity(product)"
+              class="flex-1 bg-gradient-to-r from-[#7fff00] to-[#32cd32] text-black px-4 py-3 rounded-xl font-black uppercase tracking-[2px] text-sm transition-all duration-300 hover:enabled:shadow-[0_0_30px_rgba(127,255,0,0.5)] hover:enabled:-translate-y-1 hover:enabled:scale-[1.02] active:enabled:translate-y-0 active:enabled:scale-100 disabled:opacity-20 disabled:cursor-not-allowed disabled:from-gray-800 disabled:to-gray-700 disabled:text-gray-500"
+              style="text-shadow: 0 1px 0 rgba(0,0,0,0.2);">
+              🛒 AGREGAR
+            </button>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+    }
+    }
+  </div>
 </div>

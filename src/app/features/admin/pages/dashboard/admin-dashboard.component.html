@@ -1,3 +1,165 @@
-<div class="admin-dashboard">
-  <h3>Admin Dashboard</h3>
+<div class="max-w-7xl mx-auto py-8 px-4 relative">
+  <!-- Decorative paint splatters -->
+  <div
+    class="absolute w-[250px] h-[250px] bg-[#ff6b35] rounded-full blur-[100px] opacity-10 -top-20 -right-20 pointer-events-none">
+  </div>
+  <div
+    class="absolute w-[200px] h-[200px] bg-[#7fff00] rounded-full blur-[80px] opacity-8 bottom-10 -left-20 pointer-events-none">
+  </div>
+
+  <!-- Admin Header -->
+  <div class="flex items-center gap-4 mb-10">
+    <img src="assets/images/Street_Bites_Logo.png" alt="StreetBites"
+      class="w-16 h-16 drop-shadow-[0_0_20px_rgba(255,107,53,0.5)]">
+    <div>
+      <div class="flex items-center gap-3">
+        <h1
+          class="font-['Permanent_Marker',cursive,sans-serif] text-4xl text-[#ff6b35] [text-shadow:2px_2px_0_#7fff00,4px_4px_0_rgba(0,0,0,0.3)]">
+          Admin Panel
+        </h1>
+        <span
+          class="bg-[rgba(255,107,53,0.2)] border-2 border-[#ff6b35] text-[#ff6b35] text-[10px] font-bold uppercase tracking-[3px] px-3 py-1 rounded-full">
+          ⚡ BOSS
+        </span>
+      </div>
+      <p class="text-[#a0a0a0] text-sm mt-1 tracking-wider">👑 Control total de tu negocio</p>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  @if (loading()) {
+  <div class="flex flex-col items-center justify-center py-16">
+    <div class="w-12 h-12 border-4 border-[#333] border-t-[#ff6b35] rounded-full animate-spin mb-4"></div>
+    <p class="text-[#ff6b35] text-lg animate-pulse font-semibold">Cargando estadísticas...</p>
+  </div>
+  }
+
+  <!-- Error State -->
+  @if (error()) {
+  <div class="bg-[rgba(255,107,53,0.15)] border-2 border-[#ff6b35] rounded-[15px] p-5 mb-6 flex items-center gap-3">
+    <span class="text-2xl">⚠️</span>
+    <div>
+      <p class="text-[#ff6b35] font-semibold">{{ error() }}</p>
+      <button (click)="loadStats()" class="mt-1 text-sm text-[#7fff00] underline hover:text-white transition-colors">
+        Reintentar
+      </button>
+    </div>
+  </div>
+  }
+
+  <!-- Stats Cards -->
+  @if (!loading() && !error()) {
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+    <!-- Pedidos de Hoy -->
+    <div
+      class="bg-[rgba(26,26,46,0.95)] border-2 border-[#333] rounded-[20px] p-6 transition-all duration-400 hover:border-[#7fff00] hover:shadow-[0_0_25px_rgba(127,255,0,0.15)] hover:-translate-y-1 group relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-20 h-20 bg-[rgba(127,255,0,0.05)] rounded-bl-full pointer-events-none"></div>
+      <div class="flex items-center mb-3">
+        <div
+          class="p-3 bg-[rgba(127,255,0,0.12)] rounded-[12px] mr-4 group-hover:shadow-[0_0_20px_rgba(127,255,0,0.3)] transition-all duration-300">
+          <span class="text-2xl">📋</span>
+        </div>
+        <p class="text-xs text-[#888] uppercase tracking-[2px] font-bold">Pedidos Hoy</p>
+      </div>
+      <p
+        class="text-4xl font-bold text-[#7fff00] [text-shadow:0_0_15px_rgba(127,255,0,0.3)] font-['Permanent_Marker',cursive,sans-serif]">
+        {{ stats().totalOrdersToday }}</p>
+    </div>
+
+    <!-- Pedidos Pendientes -->
+    <div
+      class="bg-[rgba(26,26,46,0.95)] border-2 border-[#333] rounded-[20px] p-6 transition-all duration-400 hover:border-[#ff6b35] hover:shadow-[0_0_25px_rgba(255,107,53,0.15)] hover:-translate-y-1 group relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-20 h-20 bg-[rgba(255,107,53,0.05)] rounded-bl-full pointer-events-none">
+      </div>
+      <div class="flex items-center mb-3">
+        <div
+          class="p-3 bg-[rgba(255,107,53,0.12)] rounded-[12px] mr-4 group-hover:shadow-[0_0_20px_rgba(255,107,53,0.3)] transition-all duration-300">
+          <span class="text-2xl">⏳</span>
+        </div>
+        <p class="text-xs text-[#888] uppercase tracking-[2px] font-bold">Pendientes</p>
+      </div>
+      <p
+        class="text-4xl font-bold text-[#ff6b35] [text-shadow:0_0_15px_rgba(255,107,53,0.3)] font-['Permanent_Marker',cursive,sans-serif]">
+        {{ stats().pendingOrders }}</p>
+    </div>
+
+    <!-- Productos Activos -->
+    <div
+      class="bg-[rgba(26,26,46,0.95)] border-2 border-[#333] rounded-[20px] p-6 transition-all duration-400 hover:border-[#7fff00] hover:shadow-[0_0_25px_rgba(127,255,0,0.15)] hover:-translate-y-1 group relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-20 h-20 bg-[rgba(127,255,0,0.05)] rounded-bl-full pointer-events-none"></div>
+      <div class="flex items-center mb-3">
+        <div
+          class="p-3 bg-[rgba(127,255,0,0.12)] rounded-[12px] mr-4 group-hover:shadow-[0_0_20px_rgba(127,255,0,0.3)] transition-all duration-300">
+          <span class="text-2xl">📦</span>
+        </div>
+        <p class="text-xs text-[#888] uppercase tracking-[2px] font-bold">Productos</p>
+      </div>
+      <p
+        class="text-4xl font-bold text-[#7fff00] [text-shadow:0_0_15px_rgba(127,255,0,0.3)] font-['Permanent_Marker',cursive,sans-serif]">
+        {{ stats().activeProducts }}</p>
+    </div>
+
+    <!-- Ventas del Día -->
+    <div
+      class="bg-[rgba(26,26,46,0.95)] border-2 border-[#333] rounded-[20px] p-6 transition-all duration-400 hover:border-[#7fff00] hover:shadow-[0_0_25px_rgba(127,255,0,0.15)] hover:-translate-y-1 group relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-20 h-20 bg-[rgba(127,255,0,0.05)] rounded-bl-full pointer-events-none"></div>
+      <div class="flex items-center mb-3">
+        <div
+          class="p-3 bg-[rgba(127,255,0,0.12)] rounded-[12px] mr-4 group-hover:shadow-[0_0_20px_rgba(127,255,0,0.3)] transition-all duration-300">
+          <span class="text-2xl">💰</span>
+        </div>
+        <p class="text-xs text-[#888] uppercase tracking-[2px] font-bold">Ventas Hoy</p>
+      </div>
+      <p
+        class="text-3xl font-bold text-[#7fff00] [text-shadow:0_0_15px_rgba(127,255,0,0.3)] font-['Permanent_Marker',cursive,sans-serif]">
+        {{ stats().totalSalesToday | currency:'COP':'symbol-narrow':'1.0-0' }}
+      </p>
+    </div>
+  </div>
+
+  <!-- Quick Links Section -->
+  <div class="mb-4">
+    <h2
+      class="font-['Permanent_Marker',cursive,sans-serif] text-2xl text-[#ff6b35] mb-5 [text-shadow:1px_1px_0_rgba(127,255,0,0.3)]">
+      ⚡ Acciones rápidas
+    </h2>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <a routerLink="/admin/products"
+      class="bg-[rgba(26,26,46,0.95)] border-2 border-[#333] rounded-[20px] p-6 transition-all duration-400 hover:border-[#7fff00] hover:shadow-[0_0_25px_rgba(127,255,0,0.15)] hover:-translate-y-1 flex items-center justify-between group relative overflow-hidden">
+      <div
+        class="absolute inset-0 bg-gradient-to-r from-transparent to-[rgba(127,255,0,0.03)] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+      </div>
+      <div class="flex items-center gap-4 relative z-10">
+        <div
+          class="p-3 bg-[rgba(127,255,0,0.12)] rounded-[12px] group-hover:shadow-[0_0_20px_rgba(127,255,0,0.3)] transition-all duration-300">
+          <span class="text-3xl">🍔</span>
+        </div>
+        <div>
+          <h3 class="text-lg font-bold text-white group-hover:text-[#7fff00] transition-colors">Gestionar Productos</h3>
+          <p class="text-sm text-[#888]">Agregar, editar o desactivar productos</p>
+        </div>
+      </div>
+      <span class="text-[#7fff00] text-2xl group-hover:translate-x-2 transition-transform relative z-10">→</span>
+    </a>
+
+    <a routerLink="/admin/orders"
+      class="bg-[rgba(26,26,46,0.95)] border-2 border-[#333] rounded-[20px] p-6 transition-all duration-400 hover:border-[#ff6b35] hover:shadow-[0_0_25px_rgba(255,107,53,0.15)] hover:-translate-y-1 flex items-center justify-between group relative overflow-hidden">
+      <div
+        class="absolute inset-0 bg-gradient-to-r from-transparent to-[rgba(255,107,53,0.03)] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+      </div>
+      <div class="flex items-center gap-4 relative z-10">
+        <div
+          class="p-3 bg-[rgba(255,107,53,0.12)] rounded-[12px] group-hover:shadow-[0_0_20px_rgba(255,107,53,0.3)] transition-all duration-300">
+          <span class="text-3xl">📋</span>
+        </div>
+        <div>
+          <h3 class="text-lg font-bold text-white group-hover:text-[#ff6b35] transition-colors">Gestionar Pedidos</h3>
+          <p class="text-sm text-[#888]">Ver todos los pedidos y cambiar estados</p>
+        </div>
+      </div>
+      <span class="text-[#ff6b35] text-2xl group-hover:translate-x-2 transition-transform relative z-10">→</span>
+    </a>
+  </div>
+  }
 </div>

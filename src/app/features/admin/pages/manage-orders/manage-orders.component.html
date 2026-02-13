@@ -1,3 +1,223 @@
-<div class="manage-orders">
-  <h3>Gestionar Pedidos</h3>
+<div class="max-w-7xl mx-auto py-8 px-4 relative">
+  <!-- Decorative -->
+  <div
+    class="absolute w-[200px] h-[200px] bg-[#ff6b35] rounded-full blur-[100px] opacity-10 -top-20 -left-10 pointer-events-none">
+  </div>
+
+  <div class="flex justify-between items-center mb-8">
+    <div class="flex items-center gap-4">
+      <img src="assets/images/Street_Bites_Logo.png" alt="StreetBites"
+        class="w-14 h-14 drop-shadow-[0_0_15px_rgba(255,107,53,0.5)]">
+      <div>
+        <div class="flex items-center gap-3">
+          <h1
+            class="font-['Permanent_Marker',cursive,sans-serif] text-4xl text-[#ff6b35] [text-shadow:2px_2px_0_#7fff00,4px_4px_0_rgba(0,0,0,0.3)]">
+            Pedidos
+          </h1>
+          <span
+            class="bg-[rgba(255,107,53,0.2)] border border-[#ff6b35] text-[#ff6b35] text-[9px] font-bold uppercase tracking-[2px] px-2 py-0.5 rounded-full">
+            ADMIN
+          </span>
+        </div>
+        <p class="text-[#a0a0a0] text-sm mt-1 tracking-wider">📋 Gestiona todos los pedidos del restaurante</p>
+      </div>
+    </div>
+
+    <!-- Filtro por estado -->
+    <div class="flex items-center gap-3 bg-[rgba(26,26,46,0.95)] border border-[#333] rounded-[12px] px-4 py-2.5">
+      <label class="text-xs text-[#888] uppercase tracking-[2px] font-bold">Filtrar:</label>
+      <select [value]="statusFilter()" (change)="onFilterChange($any($event.target).value)"
+        class="bg-transparent border-2 border-[#333] rounded-lg px-4 py-1.5 text-white text-sm focus:outline-none focus:border-[#ff6b35] focus:shadow-[0_0_10px_rgba(255,107,53,0.2)] transition-all duration-300 cursor-pointer">
+        <option value="ALL" class="bg-[#1a1a2e] text-white">Todos</option>
+        <option [value]="OrderStatus.PENDING" class="bg-[#1a1a2e] text-white">⏳ Pendientes</option>
+        <option [value]="OrderStatus.PREPARING" class="bg-[#1a1a2e] text-white">🍳 En preparación</option>
+        <option [value]="OrderStatus.DELIVERED" class="bg-[#1a1a2e] text-white">✅ Entregados</option>
+        <option [value]="OrderStatus.CANCELLED" class="bg-[#1a1a2e] text-white">❌ Cancelados</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  @if (error()) {
+  <div class="bg-[rgba(255,107,53,0.15)] border-2 border-[#ff6b35] rounded-[15px] p-5 mb-6 flex items-center gap-3">
+    <span class="text-2xl">⚠️</span>
+    <div>
+      <p class="text-[#ff6b35] font-semibold">{{ error() }}</p>
+      <button (click)="loadOrders()" class="mt-1 text-sm text-[#7fff00] underline hover:text-white transition-colors">
+        Reintentar
+      </button>
+    </div>
+  </div>
+  }
+
+  <!-- Loading State -->
+  @if (loading()) {
+  <div class="flex flex-col items-center justify-center py-16">
+    <div class="w-12 h-12 border-4 border-[#333] border-t-[#ff6b35] rounded-full animate-spin mb-4"></div>
+    <p class="text-[#ff6b35] text-lg animate-pulse font-semibold">Cargando pedidos...</p>
+  </div>
+  }
+
+  <!-- Orders Table -->
+  @if (!loading()) {
+  <div class="bg-[rgba(26,26,46,0.95)] border-2 border-[#333] rounded-[20px] overflow-hidden">
+    <table class="table-auto w-full">
+      <thead class="bg-[rgba(255,107,53,0.06)] border-b-2 border-[#333]">
+        <tr>
+          <th class="px-5 py-4 text-left text-xs font-bold text-[#ff6b35] uppercase tracking-[2px]">ID</th>
+          <th class="px-5 py-4 text-left text-xs font-bold text-[#ff6b35] uppercase tracking-[2px]">Usuario</th>
+          <th class="px-5 py-4 text-left text-xs font-bold text-[#ff6b35] uppercase tracking-[2px]">Fecha</th>
+          <th class="px-5 py-4 text-center text-xs font-bold text-[#ff6b35] uppercase tracking-[2px]">Estado</th>
+          <th class="px-5 py-4 text-right text-xs font-bold text-[#ff6b35] uppercase tracking-[2px]">Total</th>
+          <th class="px-5 py-4 text-center text-xs font-bold text-[#ff6b35] uppercase tracking-[2px]">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (order of filteredOrders(); track order.id) {
+        <tr class="border-t border-[#2a2a3e] hover:bg-[rgba(255,107,53,0.03)] transition-colors duration-300 group">
+          <td class="px-5 py-4 text-sm text-[#a0a0a0] font-mono">#{{ order.id | slice:0:8 }}</td>
+          <td class="px-5 py-4 text-sm text-white">{{ order.userEmail || order.userId }}</td>
+          <td class="px-5 py-4 text-sm text-[#a0a0a0]">
+            {{ order.createdAt | date:'dd/MM/yyyy HH:mm' }}
+          </td>
+          <td class="px-5 py-4 text-center">
+            <span class="px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider"
+              [class]="getStatusClass(order.status)">
+              {{ getStatusLabel(order.status) }}
+            </span>
+          </td>
+          <td class="px-5 py-4 text-right text-sm font-bold text-[#7fff00]">
+            {{ order.total | currency:'COP':'symbol-narrow':'1.0-0' }}
+          </td>
+          <td class="px-5 py-4 text-center">
+            <button (click)="openOrderDetail(order)"
+              class="bg-gradient-to-r from-[#ff6b35] to-[#ff8c00] text-white px-4 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-300 hover:shadow-[0_0_15px_rgba(255,107,53,0.3)] hover:-translate-y-0.5">
+              👁️ Ver detalle
+            </button>
+          </td>
+        </tr>
+        } @empty {
+        <tr>
+          <td colspan="6" class="px-5 py-12 text-center">
+            <p class="text-3xl mb-3">📭</p>
+            <p class="text-[#a0a0a0]">No hay pedidos {{ statusFilter() !== 'ALL' ? 'con este estado' : '' }}</p>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  }
+
+  <!-- Order Detail Modal -->
+  @if (selectedOrder()) {
+  <div class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 backdrop-blur-sm">
+    <div
+      class="bg-[rgba(26,26,46,0.98)] border-2 border-[#ff6b35] rounded-[20px] shadow-[0_0_40px_rgba(255,107,53,0.2),0_25px_50px_rgba(0,0,0,0.5)] p-7 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-start mb-6">
+        <div class="flex items-center gap-3">
+          <div class="p-2 bg-[rgba(255,107,53,0.12)] rounded-[10px]">
+            <span class="text-2xl">📋</span>
+          </div>
+          <div>
+            <h3
+              class="font-['Permanent_Marker',cursive,sans-serif] text-xl text-[#ff6b35] [text-shadow:1px_1px_0_rgba(127,255,0,0.3)]">
+              Pedido #{{ selectedOrder()!.id | slice:0:8 }}
+            </h3>
+            <p class="text-[#888] text-xs uppercase tracking-wider">Detalle completo del pedido</p>
+          </div>
+        </div>
+        <button (click)="closeOrderDetail()"
+          class="text-[#666] hover:text-[#ff6b35] transition-colors p-1 hover:bg-[rgba(255,107,53,0.1)] rounded-lg">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Order Info -->
+      <div class="grid grid-cols-2 gap-4 mb-6">
+        <div class="bg-[rgba(255,255,255,0.02)] rounded-[12px] p-4 border border-[#2a2a3e]">
+          <p class="text-xs text-[#888] uppercase tracking-[2px] mb-1">👤 Usuario</p>
+          <p class="font-bold text-white text-sm">{{ selectedOrder()!.userEmail || selectedOrder()!.userId }}</p>
+        </div>
+        <div class="bg-[rgba(255,255,255,0.02)] rounded-[12px] p-4 border border-[#2a2a3e]">
+          <p class="text-xs text-[#888] uppercase tracking-[2px] mb-1">📅 Fecha</p>
+          <p class="font-bold text-white text-sm">{{ selectedOrder()!.createdAt | date:'dd/MM/yyyy HH:mm' }}</p>
+        </div>
+        <div class="bg-[rgba(255,255,255,0.02)] rounded-[12px] p-4 border border-[#2a2a3e]">
+          <p class="text-xs text-[#888] uppercase tracking-[2px] mb-1">🏷️ Estado</p>
+          <span class="inline-block px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mt-1"
+            [class]="getStatusClass(selectedOrder()!.status)">
+            {{ getStatusLabel(selectedOrder()!.status) }}
+          </span>
+        </div>
+        <div class="bg-[rgba(255,255,255,0.02)] rounded-[12px] p-4 border border-[#2a2a3e]">
+          <p class="text-xs text-[#888] uppercase tracking-[2px] mb-1">💰 Total</p>
+          <p class="font-bold text-[#7fff00] text-lg [text-shadow:0_0_10px_rgba(127,255,0,0.3)]">
+            {{ selectedOrder()!.total | currency:'COP':'symbol-narrow':'1.0-0' }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Order Items -->
+      <div class="flex items-center gap-2 mb-3">
+        <span class="text-lg">🍕</span>
+        <h4 class="font-bold text-[#ff6b35] uppercase tracking-[2px] text-xs">Productos del pedido</h4>
+      </div>
+      <table class="table-auto w-full mb-6 text-sm">
+        <thead class="bg-[rgba(255,107,53,0.06)]">
+          <tr>
+            <th class="px-4 py-2.5 text-left text-xs text-[#ff6b35] uppercase tracking-wider font-bold">Producto</th>
+            <th class="px-4 py-2.5 text-center text-xs text-[#ff6b35] uppercase tracking-wider font-bold">Cant.</th>
+            <th class="px-4 py-2.5 text-right text-xs text-[#ff6b35] uppercase tracking-wider font-bold">Precio</th>
+            <th class="px-4 py-2.5 text-right text-xs text-[#ff6b35] uppercase tracking-wider font-bold">Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of selectedOrder()!.items; track item.productId) {
+          <tr class="border-t border-[#2a2a3e]">
+            <td class="px-4 py-3 text-white">{{ item.product?.name || item.productName || item.productId }}</td>
+            <td class="px-4 py-3 text-center">
+              <span
+                class="bg-[rgba(255,255,255,0.05)] border border-[#333] rounded-lg px-2 py-0.5 text-white font-bold">{{
+                item.quantity }}</span>
+            </td>
+            <td class="px-4 py-3 text-right text-[#a0a0a0]">
+              {{ item.price | currency:'COP':'symbol-narrow':'1.0-0' }}
+            </td>
+            <td class="px-4 py-3 text-right font-bold text-[#7fff00]">
+              {{ (item.price * item.quantity) | currency:'COP':'symbol-narrow':'1.0-0' }}
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+
+      <!-- Change Status -->
+      <div class="border-t-2 border-[#333] pt-5">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="text-lg">⚡</span>
+          <h4 class="font-bold text-[#ff6b35] uppercase tracking-[2px] text-xs">Cambiar Estado</h4>
+        </div>
+        <div class="flex items-center gap-4">
+          <select [(ngModel)]="newStatus"
+            class="bg-[rgba(255,255,255,0.05)] border-2 border-[#333] rounded-[10px] px-4 py-2.5 flex-1 text-white text-sm focus:outline-none focus:border-[#ff6b35] focus:shadow-[0_0_10px_rgba(255,107,53,0.2)] transition-all duration-300 cursor-pointer">
+            @for (status of statusOptions; track status) {
+            <option [ngValue]="status" class="bg-[#1a1a2e] text-white">{{ getStatusLabel(status) }}</option>
+            }
+          </select>
+          <button (click)="updateOrderStatus()" [disabled]="updatingStatus() || newStatus() === selectedOrder()!.status"
+            class="bg-gradient-to-r from-[#ff6b35] to-[#ff8c00] text-white px-7 py-2.5 rounded-[10px] font-bold uppercase tracking-wider text-sm transition-all duration-300 hover:enabled:shadow-[0_0_25px_rgba(255,107,53,0.4)] disabled:opacity-40 disabled:cursor-not-allowed">
+            @if (updatingStatus()) {
+            ⏳ Actualizando...
+            } @else {
+            🔄 Actualizar
+            }
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  }
 </div>
